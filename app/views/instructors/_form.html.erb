@@ -1,0 +1,22 @@
+<%= form_with(model: instructor) do |form| %>
+  <% if instructor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(instructor.errors.count, "error") %> prohibited this instructor from being saved:</h2>
+
+      <ul>
+        <% instructor.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :department %>
+    <%= form.text_field :department %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

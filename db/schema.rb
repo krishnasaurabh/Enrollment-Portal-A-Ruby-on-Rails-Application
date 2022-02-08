@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_08_001923) do
+ActiveRecord::Schema.define(version: 2022_02_08_200358) do
 
   create_table "admins", force: :cascade do |t|
     t.string "phone_number"
@@ -32,9 +32,9 @@ ActiveRecord::Schema.define(version: 2022_02_08_001923) do
     t.integer "capacity"
     t.integer "status"
     t.string "room"
+    t.integer "instructor_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "instructor_id", null: false
     t.index ["instructor_id"], name: "index_courses_on_instructor_id"
   end
 
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_001923) do
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "type"
     t.string "user_type"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

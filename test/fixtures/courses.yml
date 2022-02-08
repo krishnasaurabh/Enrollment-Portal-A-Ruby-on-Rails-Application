@@ -12,6 +12,7 @@ one:
   capacity: 1
   status: 1
   room: MyString
+  instructor: one
 
 two:
   name: MyString
@@ -25,3 +26,4 @@ two:
   capacity: 1
   status: 1
   room: MyString
+  instructor: two

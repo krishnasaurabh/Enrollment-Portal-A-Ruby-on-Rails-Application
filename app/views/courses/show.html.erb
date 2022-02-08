@@ -55,5 +55,10 @@
   <%= @course.room %>
 </p>
 
+<p>
+  <strong>Instructor:</strong>
+  <%= @course.instructor_id %>
+</p>
+
 <%= link_to 'Edit', edit_course_path(@course) %> |
 <%= link_to 'Back', courses_path %>

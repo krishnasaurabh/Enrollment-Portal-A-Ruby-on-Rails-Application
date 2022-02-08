@@ -28,12 +28,12 @@
 
   <div class="field">
     <%= form.label :weekday_one %>
-    <%= form.number_field :weekday_one %>
+    <%= form.select :weekday_one, options_for_select(Course.weekday_ones.map {|key, value| [key.titleize, Course.weekday_ones.key(value)]}, @course.weekday_one) %>
   </div>
 
   <div class="field">
     <%= form.label :weekday_two %>
-    <%= form.number_field :weekday_two %>
+    <%= form.select :weekday_two, options_for_select(Course.weekday_twos.map {|key, value| [key.titleize, Course.weekday_twos.key(value)]}, @course.weekday_two) ,  include_blank: true%>
   </div>
 
   <div class="field">
@@ -58,7 +58,7 @@
 
   <div class="field">
     <%= form.label :status %>
-    <%= form.number_field :status %>
+    <%= form.select :status, options_for_select(Course.statuses.map {|key, value| [key.titleize, Course.statuses.key(value)]}, @course.status) ,  include_blank: false%>
   </div>
 
   <div class="field">
@@ -66,6 +66,11 @@
     <%= form.text_field :room %>
   </div>
 
+  <div class="field">
+    <%= form.label :instructor_id, "Instructor name" %>
+    <%= form.collection_select :instructor_id, Instructor.all,:id,:department, include_blank: false %>
+  </div>
+                
   <div class="actions">
     <%= form.submit %>
   </div>

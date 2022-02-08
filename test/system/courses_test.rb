@@ -18,6 +18,7 @@ class CoursesTest < ApplicationSystemTestCase
     fill_in "Course code", with: @course.course_code
     fill_in "Description", with: @course.description
     fill_in "End time", with: @course.end_time
+    fill_in "Instructor", with: @course.instructor_id
     fill_in "Instructor name", with: @course.instructor_name
     fill_in "Name", with: @course.name
     fill_in "Room", with: @course.room
@@ -39,6 +40,7 @@ class CoursesTest < ApplicationSystemTestCase
     fill_in "Course code", with: @course.course_code
     fill_in "Description", with: @course.description
     fill_in "End time", with: @course.end_time
+    fill_in "Instructor", with: @course.instructor_id
     fill_in "Instructor name", with: @course.instructor_name
     fill_in "Name", with: @course.name
     fill_in "Room", with: @course.room

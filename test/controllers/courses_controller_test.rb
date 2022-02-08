@@ -17,7 +17,7 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create course" do
     assert_difference('Course.count') do
-      post courses_url, params: { course: { capacity: @course.capacity, course_code: @course.course_code, description: @course.description, end_time: @course.end_time, instructor_name: @course.instructor_name, name: @course.name, room: @course.room, start_time: @course.start_time, status: @course.status, weekday_one: @course.weekday_one, weekday_two: @course.weekday_two } }
+      post courses_url, params: { course: { capacity: @course.capacity, course_code: @course.course_code, description: @course.description, end_time: @course.end_time, instructor_id: @course.instructor_id, instructor_name: @course.instructor_name, name: @course.name, room: @course.room, start_time: @course.start_time, status: @course.status, weekday_one: @course.weekday_one, weekday_two: @course.weekday_two } }
     end
 
     assert_redirected_to course_url(Course.last)
@@ -34,7 +34,7 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update course" do
-    patch course_url(@course), params: { course: { capacity: @course.capacity, course_code: @course.course_code, description: @course.description, end_time: @course.end_time, instructor_name: @course.instructor_name, name: @course.name, room: @course.room, start_time: @course.start_time, status: @course.status, weekday_one: @course.weekday_one, weekday_two: @course.weekday_two } }
+    patch course_url(@course), params: { course: { capacity: @course.capacity, course_code: @course.course_code, description: @course.description, end_time: @course.end_time, instructor_id: @course.instructor_id, instructor_name: @course.instructor_name, name: @course.name, room: @course.room, start_time: @course.start_time, status: @course.status, weekday_one: @course.weekday_one, weekday_two: @course.weekday_two } }
     assert_redirected_to course_url(@course)
   end
 

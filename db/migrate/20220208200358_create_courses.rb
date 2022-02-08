@@ -12,6 +12,7 @@ class CreateCourses < ActiveRecord::Migration[6.1]
       t.integer :capacity
       t.integer :status
       t.string :room
+      t.references :instructor, null: false, foreign_key: true
 
       t.timestamps
     end

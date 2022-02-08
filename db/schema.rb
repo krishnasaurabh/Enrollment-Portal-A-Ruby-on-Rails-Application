@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_07_214022) do
+ActiveRecord::Schema.define(version: 2022_02_08_001923) do
 
   create_table "admins", force: :cascade do |t|
     t.string "phone_number"
@@ -18,6 +18,33 @@ ActiveRecord::Schema.define(version: 2022_02_07_214022) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id", null: false
     t.index ["user_id"], name: "index_admins_on_user_id"
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "instructor_name"
+    t.integer "weekday_one"
+    t.integer "weekday_two"
+    t.string "start_time"
+    t.string "end_time"
+    t.string "course_code"
+    t.integer "capacity"
+    t.integer "status"
+    t.string "room"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "instructor_id", null: false
+    t.index ["instructor_id"], name: "index_courses_on_instructor_id"
+  end
+
+  create_table "enrollments", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "student_id", null: false
+    t.integer "course_id", null: false
+    t.index ["course_id"], name: "index_enrollments_on_course_id"
+    t.index ["student_id"], name: "index_enrollments_on_student_id"
   end
 
   create_table "instructors", force: :cascade do |t|
@@ -52,6 +79,9 @@ ActiveRecord::Schema.define(version: 2022_02_07_214022) do
   end
 
   add_foreign_key "admins", "users"
+  add_foreign_key "courses", "instructors"
+  add_foreign_key "enrollments", "courses"
+  add_foreign_key "enrollments", "students"
   add_foreign_key "instructors", "users"
   add_foreign_key "students", "users"
 end

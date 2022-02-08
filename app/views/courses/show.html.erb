@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @course.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @course.description %>
+</p>
+
+<p>
+  <strong>Instructor name:</strong>
+  <%= @course.instructor_name %>
+</p>
+
+<p>
+  <strong>Weekday one:</strong>
+  <%= @course.weekday_one %>
+</p>
+
+<p>
+  <strong>Weekday two:</strong>
+  <%= @course.weekday_two %>
+</p>
+
+<p>
+  <strong>Start time:</strong>
+  <%= @course.start_time %>
+</p>
+
+<p>
+  <strong>End time:</strong>
+  <%= @course.end_time %>
+</p>
+
+<p>
+  <strong>Course code:</strong>
+  <%= @course.course_code %>
+</p>
+
+<p>
+  <strong>Capacity:</strong>
+  <%= @course.capacity %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @course.status %>
+</p>
+
+<p>
+  <strong>Room:</strong>
+  <%= @course.room %>
+</p>
+
+<%= link_to 'Edit', edit_course_path(@course) %> |
+<%= link_to 'Back', courses_path %>

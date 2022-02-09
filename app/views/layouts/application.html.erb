@@ -19,7 +19,9 @@
   <%= render 'home/header' %>
   <br>
     <div class="container">
-      
+      <% if alert %>
+        <%= render 'layouts/alerts' %>
+      <% end %>
       <%= yield %>
     </div>
     <!-- Optional JavaScript; choose one of the two! -->

@@ -72,10 +72,14 @@ class EnrollmentsController < ApplicationController
       @course = Course.find(params[:id])
       @student = Student.find_by user_id: current_user.id
       total_enrollments = Enrollment.where(course_id: @course.id).count
-      if @course.capacity > total_enrollments and @student != nil
+      if Enrollment.find_by(student_id: @student.id, course_id: @course.id)
+        flash[:alert] = "You have already registered for this course"
+      elsif @course.capacity > total_enrollments and @student != nil
         enrollment = Enrollment.new(:student_id => @student.id , :course_id => params[:id])
         enrollment.save
         check_status
+      elsif @course.capacity <= total_enrollments
+        flash[:alert] = "Course status is closed, please keep checking MyBiryaniPack protal when it opens up."
       end
     end
     redirect_to courses_path

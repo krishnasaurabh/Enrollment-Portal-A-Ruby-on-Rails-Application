@@ -3,7 +3,12 @@ class CoursesController < ApplicationController
 
   # GET /courses or /courses.json
   def index
-    @courses = Course.all
+    if is_instructor?
+      @instructor = Instructor.find_by user_id: current_user.id
+      @courses = Course.where(instructor_id: @instructor.id)
+    else
+      @courses = Course.all
+    end
   end
 
   # GET /courses/1 or /courses/1.json
@@ -25,6 +30,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
+        check_status
         format.html { redirect_to course_url(@course), notice: "Course was successfully created." }
         format.json { render :show, status: :created, location: @course }
       else
@@ -38,6 +44,7 @@ class CoursesController < ApplicationController
   def update
     respond_to do |format|
       if @course.update(course_params)
+        check_status
         format.html { redirect_to course_url(@course), notice: "Course was successfully updated." }
         format.json { render :show, status: :ok, location: @course }
       else
@@ -57,6 +64,17 @@ class CoursesController < ApplicationController
     end
   end
 
+  def check_status
+    total_enrollments = Enrollment.where(course_id: @course.id).count
+    if total_enrollments >= @course.capacity && @course.status == "open"
+      @course.status = :closed
+      @course.save
+    elsif total_enrollments < @course.capacity && @course.status == "closed"
+      @course.status = :open
+      @course.save
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_course

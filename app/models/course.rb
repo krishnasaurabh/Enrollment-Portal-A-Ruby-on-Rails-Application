@@ -14,7 +14,7 @@ class Course < ApplicationRecord
     validate :check_course_code
     enum weekday_one: [:MON, :TUE, :WED, :THU, :FRI], _prefix: true
     enum weekday_two: [:MON, :TUE, :WED, :THU, :FRI], _prefix: true
-    enum status: [:open, :close, :waitlist], _prefix: true
+    enum status: [:open, :closed, :waitlist], _prefix: true
 
 
 

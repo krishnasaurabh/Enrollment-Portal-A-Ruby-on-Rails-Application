@@ -57,6 +57,17 @@ class EnrollmentsController < ApplicationController
     end
   end
 
+  def enroll_course
+    if is_student?
+      @student = Student.find_by user_id: current_user.id
+      if @student != nil
+        enrollment = Enrollment.new(:student_id => @student.id , :course_id => params[:id])
+        enrollment.save
+      end
+    end
+    redirect_to courses_path
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_enrollment

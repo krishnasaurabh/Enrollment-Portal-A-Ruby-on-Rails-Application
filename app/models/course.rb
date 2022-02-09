@@ -1,5 +1,6 @@
 class Course < ApplicationRecord
     belongs_to :instructor
+    has_many :enrollements
     validates :course_code, presence: true, uniqueness: true 
     validates :name, presence: true
     validates :description, presence: true

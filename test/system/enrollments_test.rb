@@ -14,6 +14,8 @@ class EnrollmentsTest < ApplicationSystemTestCase
     visit enrollments_url
     click_on "New Enrollment"
 
+    fill_in "Course", with: @enrollment.course_id
+    fill_in "Student", with: @enrollment.student_id
     click_on "Create Enrollment"
 
     assert_text "Enrollment was successfully created"
@@ -24,6 +26,8 @@ class EnrollmentsTest < ApplicationSystemTestCase
     visit enrollments_url
     click_on "Edit", match: :first
 
+    fill_in "Course", with: @enrollment.course_id
+    fill_in "Student", with: @enrollment.student_id
     click_on "Update Enrollment"
 
     assert_text "Enrollment was successfully updated"

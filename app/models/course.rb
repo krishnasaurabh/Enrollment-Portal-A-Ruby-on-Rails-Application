@@ -4,6 +4,7 @@ class Course < ApplicationRecord
     validates :name, presence: true
     validates :description, presence: true
     validates :weekday_one, presence: true
+    validates :capacity, :numericality => {greater_than_or_equal_to: 0}
     validates :start_time, presence: true
     validates :end_time, presence: true
     validates :room, presence: true

@@ -22,11 +22,6 @@
   </div>
 
   <div class="field">
-    <%= form.label :instructor_name %>
-    <%= form.text_field :instructor_name %>
-  </div>
-
-  <div class="field">
     <%= form.label :weekday_one %>
     <%= form.select :weekday_one, options_for_select(Course.weekday_ones.map {|key, value| [key.titleize, Course.weekday_ones.key(value)]}, @course.weekday_one) %>
   </div>

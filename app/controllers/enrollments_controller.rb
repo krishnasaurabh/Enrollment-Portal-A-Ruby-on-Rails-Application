@@ -3,7 +3,11 @@ class EnrollmentsController < ApplicationController
 
   # GET /enrollments or /enrollments.json
   def index
-    @enrollments = Enrollment.all
+    if is_student?
+      @enrollments = Enrollment.where(student_id: Student.find_by(user_id: current_user.id).id)
+    else
+      @enrollments = Enrollment.all
+    end
   end
 
   # GET /enrollments/1 or /enrollments/1.json
@@ -87,7 +91,7 @@ class EnrollmentsController < ApplicationController
       @course.save
     end
   end
-  
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_enrollment

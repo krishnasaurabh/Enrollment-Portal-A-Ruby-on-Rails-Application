@@ -1,5 +1,6 @@
 class EnrollmentsController < ApplicationController
   before_action :set_enrollment, only: %i[ show edit update destroy ]
+  before_action :correct_student?, only: %i[ edit update destroy show]
 
   # GET /enrollments or /enrollments.json
   def index
@@ -21,6 +22,8 @@ class EnrollmentsController < ApplicationController
 
   # GET /enrollments/1/edit
   def edit
+    flash[:alert] = "Not authorised to perform this action"
+    redirect_to courses_path
   end
 
   # POST /enrollments or /enrollments.json
@@ -93,6 +96,24 @@ class EnrollmentsController < ApplicationController
     elsif total_enrollments < @course.capacity && @course.status == "closed"
       @course.status = :open
       @course.save
+    end
+  end
+
+  def correct_student?
+    @student = Student.find_by user_id: current_user.id
+    if !@student.nil? && @student.id!=@enrollment.student_id
+       flash[:alert] = "Not authorised to perform this action"
+       redirect_to courses_path
+    end
+  end
+
+  def correct_instructor?
+    if is_instructor?
+      @instructor = Instructor.find_by user_id: current_user.id
+      if @course.instructor_id!=@instructor.id
+        flash[:alert] = "Not authorised to perform this action"
+        redirect_to courses_path
+      end
     end
   end
 

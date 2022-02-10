@@ -1,14 +1,11 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: %i[ show edit update destroy ]
+  before_action :set_course, only: %i[ show edit update destroy enrolled_students]
+  before_action :correct_student?, only: %i[ new edit create update destroy enrolled_students]
+  before_action :correct_instructor?, only: %i[ edit update destroy enrolled_students]
 
   # GET /courses or /courses.json
   def index
-    if is_instructor?
-      @instructor = Instructor.find_by user_id: current_user.id
-      @courses = Course.where(instructor_id: @instructor.id)
-    else
       @courses = Course.all
-    end
   end
 
   # GET /courses/1 or /courses/1.json
@@ -75,6 +72,32 @@ class CoursesController < ApplicationController
     end
   end
   
+  def correct_student?
+    @student = Student.find_by user_id: current_user.id
+    if !@student.nil?
+       flash[:alert] = "Not authorised to perform this action"
+       redirect_to courses_path
+    end
+  end
+
+  def correct_instructor?
+    if is_instructor?
+      @instructor = Instructor.find_by user_id: current_user.id
+      if @course.instructor_id!=@instructor.id
+        flash[:alert] = "Not authorised to perform this action"
+        redirect_to courses_path
+      end
+    end
+  end
+
+  def enrolled_students
+    if is_instructor?
+      @enrolled_students = Enrollment.where(course_id: params[:id])
+
+    end
+    
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_course

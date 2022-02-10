@@ -8,5 +8,6 @@ Rails.application.routes.draw do
   get 'home/index'
   root 'home#index'
   get '/enroll_course/:id' , to: 'enrollments#enroll_course', as: 'enroll_course'
+  get '/courses/:id/enrolled_students' , to: 'courses#enrolled_students', as: 'enrolled_students'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

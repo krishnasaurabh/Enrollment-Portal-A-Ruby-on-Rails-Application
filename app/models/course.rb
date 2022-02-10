@@ -45,7 +45,7 @@ class Course < ApplicationRecord
     end
 
     def check_course_code
-        if !course_code.match(/[A-Z]{3}[0-9]{3}/)
+        if !course_code.match(/^[A-Z]{3}[0-9]{3}$/)
             errors.add(:course_code, "should have the format 3 letters followed by 3 digits, e.g. ECE123, CSA090")
         end
     end

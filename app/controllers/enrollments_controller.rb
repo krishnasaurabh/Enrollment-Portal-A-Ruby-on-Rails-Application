@@ -1,13 +1,17 @@
 class EnrollmentsController < ApplicationController
   before_action :set_enrollment, only: %i[ show edit update destroy ]
-  before_action :correct_student?, only: %i[ edit update destroy show]
+  before_action :correct_student?, only: %i[ edit update destroy show ]
+  before_action :correct_student?, only: %i[ edit update destroy show  ]
 
   # GET /enrollments or /enrollments.json
   def index
     if is_student?
       @enrollments = Enrollment.where(student_id: Student.find_by(user_id: current_user.id).id)
+    elsif is_instructor?
+      flash[:alert] = "Not authorised to perform this action"
+      redirect_to courses_path
     else
-      @enrollments = Enrollment.all
+      @enrollements = Enrollment.all
     end
   end
 
@@ -110,7 +114,7 @@ class EnrollmentsController < ApplicationController
   def correct_instructor?
     if is_instructor?
       @instructor = Instructor.find_by user_id: current_user.id
-      if @course.instructor_id!=@instructor.id
+      if !@instructor.nil? && @instructor.id!=@enrollment.course.instructor_id
         flash[:alert] = "Not authorised to perform this action"
         redirect_to courses_path
       end

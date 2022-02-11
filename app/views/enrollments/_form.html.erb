@@ -18,7 +18,11 @@
 
   <div class="field">
     <%= form.label :course_id %>
-    <%= form.text_field :course_id %>
+    <% if @course_id_enroll  %>
+      <%= form.text_field :course_id, value: @course_id_enroll, readonly: true%>
+    <% else %>
+      <%= form.text_field :course_id %>
+    <% end %>
   </div>
 
   <div class="actions">

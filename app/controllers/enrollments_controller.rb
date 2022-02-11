@@ -3,6 +3,7 @@ class EnrollmentsController < ApplicationController
   before_action :correct_student?, only: %i[ edit update destroy show ]
   before_action :correct_student?, only: %i[ edit update destroy show  ]
 
+
   # GET /enrollments or /enrollments.json
   def index
     if is_student?
@@ -32,17 +33,20 @@ class EnrollmentsController < ApplicationController
 
   # POST /enrollments or /enrollments.json
   def create
-    @enrollment = Enrollment.new(enrollment_params)
-
-    respond_to do |format|
-      if @enrollment.save
-        @course = Course.find(@enrollment.course_id)
-        check_status
-        format.html { redirect_to enrollment_url(@enrollment), notice: "Enrollment was successfully created." }
-        format.json { render :show, status: :created, location: @enrollment }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @enrollment.errors, status: :unprocessable_entity }
+    if is_instructor?
+      enroll_course_for_student
+    else
+      @enrollment = Enrollment.new(enrollment_params)
+      respond_to do |format|
+        if @enrollment.save
+          @course = Course.find(@enrollment.course_id)
+          check_status
+          format.html { redirect_to enrollment_url(@enrollment), notice: "Enrollment was successfully created." }
+          format.json { render :show, status: :created, location: @enrollment }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @enrollment.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -88,6 +92,30 @@ class EnrollmentsController < ApplicationController
       elsif @course.capacity <= total_enrollments
         flash[:alert] = "Course status is closed, please keep checking MyBiryaniPack protal when it opens up."
       end
+    end
+    redirect_to courses_path
+  end
+
+  def show_enroll_course_for_student
+    @enrollment = Enrollment.new
+    @course_id_enroll = params[:course_id]
+    render :new
+  end
+
+
+  def enroll_course_for_student
+    @course = Course.find(enrollment_params[:course_id])
+    @instructor = Instructor.find_by user_id: current_user.id
+    if @course.instructor_id != @instructor.id #IF the current course is not by this instructor
+      flash[:alert] = "Not authorised to perform this action"
+    elsif Enrollment.find_by(enrollment_params)
+      flash[:alert] = "The student is already registered for this course"
+    elsif @course.status == 'open'
+      enrollment = Enrollment.new(enrollment_params)
+      enrollment.save
+      check_status
+    elsif @course.status == 'closed'
+      flash[:alert] = "Course status is closed, please keep checking MyBiryaniPack protal when it opens up."
     end
     redirect_to courses_path
   end

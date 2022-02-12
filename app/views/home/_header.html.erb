@@ -13,6 +13,11 @@
             <li class="nav-item">
               <%= link_to 'Students', students_path, class:"nav-link"  %>
             </li>
+            <% if is_admin?%>
+            <li class="nav-item">
+              <%= link_to 'Instructors', instructors_path, class:"nav-link"  %>
+            </li>
+            <% end %>
             <li class="nav-item">
               <%= link_to 'Enrollments', enrollments_path, class:"nav-link"  %>
             </li>

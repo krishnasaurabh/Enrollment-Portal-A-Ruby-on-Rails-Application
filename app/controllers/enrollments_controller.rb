@@ -41,8 +41,8 @@ class EnrollmentsController < ApplicationController
         if @enrollment.save
           @course = Course.find(@enrollment.course_id)
           check_status
-          format.html { redirect_to enrollment_url(@enrollment), notice: "Enrollment was successfully created." }
-          format.json { render :show, status: :created, location: @enrollment }
+          format.html { redirect_to enrolled_students_path(@course), notice: "Enrollment was successfully created." }
+          format.json { render :enrolled_students_path, status: :created, location: @course }
         else
           format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @enrollment.errors, status: :unprocessable_entity }

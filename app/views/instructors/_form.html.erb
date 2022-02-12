@@ -11,6 +11,18 @@
     </div>
   <% end %>
 
+  <% if is_admin?%>
+    <div class="field">
+      <%= form.label :name %><br />
+      <%= form.text_field :name, autofocus: true, autocomplete: "name" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :email %><br />
+      <%= form.email_field :email, autocomplete: "email" %>
+    </div>
+  <%end%>
+
   <div class="field">
     <%= form.label :department %>
     <%= form.text_field :department %>

@@ -21,7 +21,9 @@ class InstructorsController < ApplicationController
 
   # POST /instructors or /instructors.json
   def create
+    user = User.create!(:name => params['instructor']['name'],:email => params['instructor']["email"], :password => "defaultpassword",:user_type => "Instructor")
     @instructor = Instructor.new(instructor_params)
+    @instructor.user_id = user.id
 
     respond_to do |format|
       if @instructor.save
@@ -65,6 +67,6 @@ class InstructorsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def instructor_params
-      params.require(:instructor).permit(:department)
+      params.require(:instructor).permit(:department, :user_id)
     end
 end

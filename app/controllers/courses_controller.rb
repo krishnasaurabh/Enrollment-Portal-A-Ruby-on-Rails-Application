@@ -24,7 +24,9 @@ class CoursesController < ApplicationController
   # POST /courses or /courses.json
   def create
     @course = Course.new(course_params)
-
+    if is_instructor?
+      @course.instructor_id = current_user.id
+    end
     respond_to do |format|
       if @course.save
         check_status
@@ -92,10 +94,10 @@ class CoursesController < ApplicationController
 
   def enrolled_students
     if is_instructor? || is_admin?
+      @course_name = Course.find(params[:id]).name
+      p 'dvdadvdvadsvdasvadsvda', @course_name
       @enrolled_students = Enrollment.where(course_id: params[:id])
-
     end
-    
   end
 
   private

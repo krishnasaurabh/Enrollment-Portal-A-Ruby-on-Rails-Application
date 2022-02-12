@@ -60,11 +60,12 @@
     <%= form.label :room %>
     <%= form.text_field :room %>
   </div>
-
+  <% if is_admin? %>
   <div class="field">
     <%= form.label :instructor_id, "Instructor name" %>
-    <%= form.collection_select :instructor_id, Instructor.all,:id,:department, include_blank: false %>
+    <%= form.collection_select :instructor_id, Instructor.all,:id,:id, include_blank: false %>
   </div>
+  <% end %>
                 
   <div class="actions">
     <%= form.submit %>

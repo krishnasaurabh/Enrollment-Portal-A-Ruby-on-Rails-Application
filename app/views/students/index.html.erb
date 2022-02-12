@@ -5,16 +5,18 @@
 <table>
   <thead>
     <tr>
+      <th>Name</th>
       <th>Date of birth</th>
       <th>Phone number</th>
       <th>Major</th>
-      <th colspan="3"></th>
+      <th colspan="4"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @students.each do |student| %>
       <tr>
+        <td><%= student.user.name %></td>
         <td><%= student.date_of_birth %></td>
         <td><%= student.phone_number %></td>
         <td><%= student.major %></td>

@@ -91,7 +91,7 @@ class CoursesController < ApplicationController
   end
 
   def enrolled_students
-    if is_instructor?
+    if is_instructor? || is_admin?
       @enrolled_students = Enrollment.where(course_id: params[:id])
 
     end

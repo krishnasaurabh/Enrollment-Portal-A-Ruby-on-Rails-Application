@@ -11,8 +11,8 @@ class EnrollmentsController < ApplicationController
     elsif is_instructor?
       flash[:alert] = "Not authorised to perform this action"
       redirect_to courses_path
-    else
-      @enrollements = Enrollment.all
+    elsif is_admin?
+      @enrollments = Enrollment.all
     end
   end
 

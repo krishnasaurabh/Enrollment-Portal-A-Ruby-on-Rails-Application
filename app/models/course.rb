@@ -1,7 +1,8 @@
 class Course < ApplicationRecord
     belongs_to :instructor
-    has_many :enrollements
+    has_many :enrollments, dependent: :delete_all
     validates :course_code, presence: true, uniqueness: true 
+    validates :status, presence: true
     validates :name, presence: true
     validates :description, presence: true
     validates :weekday_one, presence: true

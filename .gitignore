@@ -68,3 +68,5 @@ yarn-debug.log*
 
 Gemfile
 .DS_Store
+Gemfile
+Gemfile.lock

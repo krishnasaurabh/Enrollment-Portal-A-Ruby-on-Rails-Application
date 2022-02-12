@@ -13,6 +13,11 @@ class ApplicationController < ActionController::Base
      end
      helper_method :is_instructor?
 
+     def is_admin?
+          user_signed_in? && current_user.user_type == "Admin"
+     end
+     helper_method :is_admin?
+
      protected
 
           def configure_permitted_parameters

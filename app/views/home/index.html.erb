@@ -1,7 +1,7 @@
 <% if is_instructor? %> 
-    Hello Instructor <%= current_user.email %>
+    <h2>Hello Instructor <%= current_user.name %></h2>
 <% elsif is_student? %>
-    <h2>Welcome, <%=current_user.email %></h2>
+    <h2>Welcome, <%=current_user.name %></h2>
     <p>Following are the actions you are allowed to perform:</p>
   <div id="accordion">
     <div class="card">

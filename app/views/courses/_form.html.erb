@@ -50,10 +50,15 @@
     <%= form.label :capacity %>
     <%= form.number_field :capacity %>
   </div>
+  
+  <div class="field">
+    <%= form.label :waitlist_capacity %>
+    <%= form.number_field :waitlist_capacity %>
+  </div>
 
   <div class="field">
     <%= form.label :status %>
-    <%= form.select :status, options_for_select(Course.statuses.map {|key, value| [key.titleize, Course.statuses.key(value)]}, @course.status) ,  include_blank: false%>
+    <%= form.select :status, options_for_select(Course.statuses.map {|key, value| [key.titleize, Course.statuses.key(value)]}, @course.status) ,  include_blank: false, hidden: true%>
   </div>
 
   <div class="field">

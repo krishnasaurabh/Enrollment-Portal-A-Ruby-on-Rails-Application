@@ -40,6 +40,9 @@
         <td><%= link_to 'Edit', edit_course_path(course) %></td>
         <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <td><%= link_to 'Enroll', enroll_course_path(course.id), data: { confirm: 'Are you sure?' } %></td>
+        <%if course.status == "waitlist"%>
+        <td><%= link_to 'Waitlist', waitlist_course_path(course.id), data: { confirm: 'Are you sure?' } %></td>
+        <%end%>
       </tr>
     <% end %>
   </tbody>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_12_195918) do
+ActiveRecord::Schema.define(version: 2022_02_12_224754) do
 
   create_table "admins", force: :cascade do |t|
     t.string "phone_number"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 2022_02_12_195918) do
     t.integer "instructor_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "waitlist_capacity"
     t.index ["instructor_id"], name: "index_courses_on_instructor_id"
   end
 
@@ -79,10 +80,21 @@ ActiveRecord::Schema.define(version: 2022_02_12_195918) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "waitlists", force: :cascade do |t|
+    t.integer "student_id", null: false
+    t.integer "course_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id"], name: "index_waitlists_on_course_id"
+    t.index ["student_id"], name: "index_waitlists_on_student_id"
+  end
+
   add_foreign_key "admins", "users"
   add_foreign_key "courses", "instructors"
   add_foreign_key "enrollments", "courses"
   add_foreign_key "enrollments", "students"
   add_foreign_key "instructors", "users"
   add_foreign_key "students", "users"
+  add_foreign_key "waitlists", "courses"
+  add_foreign_key "waitlists", "students"
 end

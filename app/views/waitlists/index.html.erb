@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Waitlists</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Student Name</th>
+      <th>Course Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @waitlists.each do |waitlist| %>
+      <tr>
+        <td><%= waitlist.student.user.name %></td>
+        <td><%= waitlist.course.name %></td>
+        <td><%= link_to 'Drop Waitlist', waitlist, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
+<% if is_admin? %>
+<%= link_to 'New Waitlist', new_waitlist_path %>
+<%end%>

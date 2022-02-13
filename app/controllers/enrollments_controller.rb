@@ -70,15 +70,19 @@ class EnrollmentsController < ApplicationController
   def destroy
     @course = Course.find(@enrollment.course_id)
     @enrollment.destroy
+    move_students_from_waitlist_to_enrolled
     check_status
     respond_to do |format|
-      format.html { redirect_to enrollments_url, notice: "Enrollment was successfully destroyed." }
+      if is_instructor?
+        format.html { redirect_to enrolled_students_url(@enrollment.course_id), notice: "Enrollment was successfully destroyed." }
+      else
+        format.html { redirect_to enrollments_url, notice: "Enrollment was successfully destroyed." }
+      end
       format.json { head :no_content }
     end
   end
 
   def enroll_course
-
     if is_student?
       @course = Course.find(params[:id])
       @student = Student.find_by user_id: current_user.id
@@ -90,7 +94,11 @@ class EnrollmentsController < ApplicationController
         enrollment.save
         check_status
       elsif @course.capacity <= total_enrollments
-        flash[:alert] = "Course status is closed, please keep checking MyBiryaniPack protal when it opens up."
+        if @course.status == 'closed'
+          flash[:alert] = "Course status is closed, please keep checking MyBiryaniPack protal when it opens up."
+        elsif @course.status == 'waitlist'
+          flash[:alert] = "Course status is waitlist, please click waitlist if you want to get added to the course waitlist."
+        end
       end
     end
     redirect_to courses_path
@@ -120,15 +128,31 @@ class EnrollmentsController < ApplicationController
     redirect_to courses_path
   end
 
+  def move_students_from_waitlist_to_enrolled
+    total_enrollments = Enrollment.where(course_id: @course.id).count
+    total_waitlist = Waitlist.where(course_id: @course.id).count
+
+    if total_enrollments < @course.capacity && total_waitlist > 0
+      student_to_be_enrolled = Waitlist.where(course_id: @course.id).order("created_at ASC").first
+      enrolled_student = Enrollment.create!(:student_id => student_to_be_enrolled.student_id , :course_id => student_to_be_enrolled.course_id)
+      student_to_be_enrolled.destroy
+    end
+  end
+
   def check_status
     total_enrollments = Enrollment.where(course_id: @course.id).count
-    if total_enrollments >= @course.capacity && @course.status == "open"
-      @course.status = :closed
-      @course.save
-    elsif total_enrollments < @course.capacity && @course.status == "closed"
+    total_waitlist = Waitlist.where(course_id: @course.id).count
+    
+    if total_enrollments >= @course.capacity
+      if total_waitlist >= @course.waitlist_capacity
+        @course.status = :closed
+      else
+        @course.status = :waitlist
+      end
+    elsif total_enrollments < @course.capacity && (@course.status == "closed" || @course.status == "waitlist")
       @course.status = :open
-      @course.save
     end
+    @course.save
   end
 
   def correct_student?

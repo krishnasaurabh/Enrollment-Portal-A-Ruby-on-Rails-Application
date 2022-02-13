@@ -65,15 +65,20 @@ class CoursesController < ApplicationController
 
   def check_status
     total_enrollments = Enrollment.where(course_id: @course.id).count
-    if total_enrollments >= @course.capacity && @course.status == "open"
-      @course.status = :closed
-      @course.save
-    elsif total_enrollments < @course.capacity && @course.status == "closed"
+    total_waitlist = Waitlist.where(course_id: @course.id).count
+    
+    if total_enrollments >= @course.capacity
+      if total_waitlist >= @course.waitlist_capacity
+        @course.status = :closed
+      else
+        @course.status = :waitlist
+      end
+    elsif total_enrollments < @course.capacity && (@course.status == "closed" || @course.status == "waitlist")
       @course.status = :open
-      @course.save
     end
+    @course.save
   end
-  
+
   def correct_student?
     @student = Student.find_by user_id: current_user.id
     if !@student.nil?
@@ -108,6 +113,6 @@ class CoursesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def course_params
-      params.require(:course).permit(:name, :description, :weekday_one, :weekday_two, :start_time, :end_time, :course_code, :capacity, :status, :room, :instructor_id)
+      params.require(:course).permit(:name, :description, :weekday_one, :weekday_two, :start_time, :end_time, :course_code, :capacity, :waitlist_capacity, :status, :room, :instructor_id)
     end
 end

@@ -10,24 +10,29 @@
             <li class="nav-item">
               <%= link_to 'Courses', courses_path, class:"nav-link"  %>
             </li>
-            <li class="nav-item">
-              <%= link_to 'Students', students_path, class:"nav-link"  %>
-            </li>
             <% if is_admin?%>
             <li class="nav-item">
               <%= link_to 'Instructors', instructors_path, class:"nav-link"  %>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'Students', students_path, class:"nav-link"  %>
             </li>
             <% end %>
             <li class="nav-item">
               <%= link_to 'Enrollments', enrollments_path, class:"nav-link"  %>
             </li>
             <li class="nav-item">
-              <%= link_to 'Edit Profile',edit_user_registration_path , class:"nav-link"  %>
+              <%= link_to 'Waitlists', waitlists_path, class:"nav-link"  %>
             </li>
-           
         </ul>
         <ul class="navbar-nav d-flex">
           <% if user_signed_in? %>
+            <li class="nav-item">
+              <div class="nav-link" ><%=  current_user.name%></div>
+            </li>
+            <li class="nav-item">
+              <%= link_to 'Edit Profile',edit_user_registration_path , class:"nav-link"  %>
+            </li>
             <li class="nav-item">
                 <%= link_to 'Logout', destroy_user_session_path, method: :delete, class:"nav-link"  %>
             </li>

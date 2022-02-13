@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Student:</strong>
+  <%= @waitlist.student_id %>
+</p>
+
+<p>
+  <strong>Course:</strong>
+  <%= @waitlist.course_id %>
+</p>
+
+<%= link_to 'Edit', edit_waitlist_path(@waitlist) %> |
+<%= link_to 'Back', waitlists_path %>

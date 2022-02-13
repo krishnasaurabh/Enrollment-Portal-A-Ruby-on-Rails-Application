@@ -5,6 +5,7 @@ class HomeController < ApplicationController
         print "I am inside Inst"
         inst = Instructor.new
         inst.user_id = current_user.id
+        inst.department = ''
         inst.save
         p inst
         redirect_to edit_instructor_path :id=>inst.id
@@ -16,7 +17,10 @@ class HomeController < ApplicationController
         print "I am inside Student"
         stud = Student.new
         stud.user_id = current_user.id
-        stud.save
+        stud.phone_number = 'Edit Phone'
+        stud.date_of_birth = Date.current
+        stud.major = 'Edit Major'
+        stud.save!
         p stud
         redirect_to edit_student_path :id=>stud.id
       end

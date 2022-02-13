@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: %i[ show edit update destroy enrolled_students]
-  before_action :correct_student?, only: %i[ new edit create update destroy enrolled_students]
-  before_action :correct_instructor?, only: %i[ edit update destroy enrolled_students]
+  before_action :set_course, only: %i[ show edit update destroy enrolled_students waitlisted_students]
+  before_action :correct_student?, only: %i[ new edit create update destroy enrolled_students waitlisted_students]
+  before_action :correct_instructor?, only: %i[ edit update destroy enrolled_students waitlisted_students]
 
   # GET /courses or /courses.json
   def index
@@ -100,8 +100,14 @@ class CoursesController < ApplicationController
   def enrolled_students
     if is_instructor? || is_admin?
       @course_name = Course.find(params[:id]).name
-      p 'dvdadvdvadsvdasvadsvda', @course_name
       @enrolled_students = Enrollment.where(course_id: params[:id])
+    end
+  end
+
+  def waitlisted_students
+    if is_instructor? || is_admin?
+      @course_name = Course.find(params[:id]).name
+      @waitlisted_students = Waitlist.where(course_id: params[:id])
     end
   end
 

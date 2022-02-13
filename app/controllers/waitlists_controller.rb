@@ -33,6 +33,7 @@ class WaitlistsController < ApplicationController
     @waitlist = Waitlist.new(waitlist_params)
     respond_to do |format|
       if @waitlist.save
+        @course = Course.find(@waitlist.course_id)
         check_status
         format.html { redirect_to waitlist_url(@waitlist), notice: "Waitlist was successfully created." }
         format.json { render :show, status: :created, location: @waitlist }
@@ -72,7 +73,6 @@ class WaitlistsController < ApplicationController
   def check_status
     total_enrollments = Enrollment.where(course_id: @course.id).count
     total_waitlist = Waitlist.where(course_id: @course.id).count
-    
     if total_enrollments >= @course.capacity
       if total_waitlist >= @course.waitlist_capacity
         @course.status = :closed

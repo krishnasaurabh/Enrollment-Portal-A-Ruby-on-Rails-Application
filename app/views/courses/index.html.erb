@@ -2,11 +2,10 @@
 
 <h1>Courses</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
       <th>Name</th>
-      <th>Description</th>
       <th>Instructor name</th>
       <th>Weekday one</th>
       <th>Weekday two</th>
@@ -16,7 +15,6 @@
       <th>Capacity</th>
       <th>Status</th>
       <th>Room</th>
-      <th>Instructor</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -25,7 +23,6 @@
     <% @courses.each do |course| %>
       <tr>
         <td><%= course.name %></td>
-        <td><%= course.description %></td>
         <td><%= course.instructor.user.name %></td>
         <td><%= course.weekday_one %></td>
         <td><%= course.weekday_two %></td>
@@ -35,14 +32,19 @@
         <td><%= course.capacity %></td>
         <td><%= course.status %></td>
         <td><%= course.room %></td>
-        <td><%= course.instructor_id %></td>
         <td><%= link_to 'Show', course %></td>
-        <td><%= link_to 'Edit', edit_course_path(course) %></td>
-        <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <td><%= link_to 'Enroll', enroll_course_path(course.id), data: { confirm: 'Are you sure?' } %></td>
-        <%if course.status == "waitlist"%>
-        <td><%= link_to 'Waitlist', waitlist_course_path(course.id), data: { confirm: 'Are you sure?' } %></td>
-        <%end%>
+        <% if is_student? %>
+          <td><%= link_to 'Enroll', enroll_course_path(course.id), data: { confirm: 'Are you sure?' } %></td>
+          <%if course.status == "waitlist"%>
+            <td><%= link_to 'Waitlist', waitlist_course_path(course.id), data: { confirm: 'Are you sure?' } %></td>
+          <%end%>
+        <% elsif is_instructor? && course.instructor_id == @instructor_id %>
+          <td><%= link_to 'Edit', edit_course_path(course) %></td>
+          <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <%else%>
+          <td><%= link_to 'Edit', edit_course_path(course) %></td>
+          <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

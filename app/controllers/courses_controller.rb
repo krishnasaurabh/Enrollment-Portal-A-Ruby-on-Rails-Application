@@ -5,7 +5,10 @@ class CoursesController < ApplicationController
 
   # GET /courses or /courses.json
   def index
-      @courses = Course.all
+    @courses = Course.all
+    if is_instructor?
+      @instructor_id = Instructor.find_by(user_id: current_user.id).id
+    end
   end
 
   # GET /courses/1 or /courses/1.json
@@ -25,7 +28,8 @@ class CoursesController < ApplicationController
   def create
     @course = Course.new(course_params)
     if is_instructor?
-      @course.instructor_id = current_user.id
+      @instructor = Instructor.find_by user_id: current_user.id
+      @course.instructor_id = @instructor.id
     end
     respond_to do |format|
       if @course.save

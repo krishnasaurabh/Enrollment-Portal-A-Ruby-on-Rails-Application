@@ -5,8 +5,8 @@ class HomeController < ApplicationController
         print "I am inside Inst"
         inst = Instructor.new
         inst.user_id = current_user.id
-        inst.department = ''
-        inst.save
+        inst.department = 'edit deptartment'
+        inst.save!
         p inst
         redirect_to edit_instructor_path :id=>inst.id
       end

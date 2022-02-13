@@ -5,6 +5,8 @@
 <table class="table">
   <thead>
     <tr>
+      <th>Name</th>
+      <th>Email</th>
       <th>Department</th>
       <th colspan="3"></th>
     </tr>
@@ -13,6 +15,8 @@
   <tbody>
     <% @instructors.each do |instructor| %>
       <tr>
+        <td><%= instructor.user.name %></td>
+        <td><%= instructor.user.email %></td>
         <td><%= instructor.department %></td>
         <td><%= link_to 'Show', instructor %></td>
         <td><%= link_to 'Edit', edit_instructor_path(instructor) %></td>

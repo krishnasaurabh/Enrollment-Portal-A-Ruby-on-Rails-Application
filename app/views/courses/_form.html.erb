@@ -68,7 +68,7 @@
   <% if is_admin? %>
   <div class="form-group">
     <%= form.label :instructor_id, "Instructor name" %>
-    <%= form.collection_select :instructor_id, Instructor.all,:id,:id , {include_blank: false},{class:"form-control"}%>
+    <%= form.select :instructor_id, options_for_select(Instructor.all.map{|ins| [ins.user.name, ins.id]}) ,{}, {include_blank: false, class:"form-control"}%>
   </div>
   <% end %>
                 <br/>

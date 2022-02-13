@@ -11,14 +11,18 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="form-group">
     <%= form.label :student_id %>
-    <%= form.text_field :student_id %>
+    <%= form.select :student_id, options_for_select(Student.all.map{|stu| [stu.user.name, stu.id]}) ,{}, {include_blank: false, class:"form-control"}%>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= form.label :course_id %>
-    <%= form.text_field :course_id %>
+    <% if @course_id_waitlist  %>
+      <%= form.text_field :course_id, value: @course_id_waitlist, readonly: true, class:"form-control"%>
+    <% else %>
+          <%= form.select :course_id, options_for_select(Course.all.map{|c| [c.name, c.id]}) ,{}, {include_blank: false, class:"form-control"}%>
+    <% end %>
   </div>
 
   <div class="actions">

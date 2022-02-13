@@ -30,7 +30,15 @@
         <td><%= course.end_time %></td>
         <td><%= course.course_code %></td>
         <td><%= course.capacity %></td>
-        <td><%= course.status %></td>
+        <td>
+        <% if course.status == "open"%>
+        <span class="btn btn-success btn-sm">Open</span>
+        <% elsif course.status == "closed"%>
+        <span class="btn btn-danger btn-sm">Closed</span>
+        <% elsif course.status == "waitlist"%>
+        <span class="btn btn-warning btn-sm">Closed</span>
+        <% end %>        
+        </td>
         <td><%= course.room %></td>
         <td><%= link_to 'Show', course %></td>
         <% if is_student? %>
@@ -41,7 +49,7 @@
         <% elsif is_instructor? && course.instructor_id == @instructor_id %>
           <td><%= link_to 'Edit', edit_course_path(course) %></td>
           <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <%else%>
+        <% elsif is_admin? %>
           <td><%= link_to 'Edit', edit_course_path(course) %></td>
           <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>

@@ -27,8 +27,9 @@ class EnrollmentsController < ApplicationController
 
   # GET /enrollments/1/edit
   def edit
-    flash[:alert] = "Not authorised to perform this action"
-    redirect_to courses_path
+    render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
+    # flash[:alert] = "Not authorised to perform this action"
+    # redirect_to courses_path
   end
 
   # POST /enrollments or /enrollments.json

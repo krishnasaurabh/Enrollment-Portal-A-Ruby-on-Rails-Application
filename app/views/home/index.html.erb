@@ -3,44 +3,6 @@
 <% elsif is_student? %>
     <h2>Welcome, <%=current_user.name %></h2>
     <p>Following are the actions you are allowed to perform:</p>
-  <div id="accordion">
-    <div class="card">
-      <div class="card-header">
-        <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
-          Collapsible Group Item #1
-        </a>
-      </div>
-      <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
-        <div class="card-body">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo">
-        Collapsible Group Item #2
-      </a>
-      </div>
-      <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
-        <div class="card-body">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThree">
-          Collapsible Group Item #3
-        </a>
-      </div>
-      <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
-        <div class="card-body">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </div>
-      </div>
-    </div>
-  </div>
 <% else %>
     <h1>Hi Admin <%= current_user.name %></h1>
 <% end %>

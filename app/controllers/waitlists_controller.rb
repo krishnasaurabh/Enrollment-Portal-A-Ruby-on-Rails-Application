@@ -31,16 +31,21 @@ class WaitlistsController < ApplicationController
 
   # POST /waitlists or /waitlists.json
   def create
-    @waitlist = Waitlist.new(waitlist_params)
-    respond_to do |format|
-      if @waitlist.save
-        @course = Course.find(@waitlist.course_id)
-        check_status
-        format.html { redirect_to waitlist_url(@waitlist), notice: "Waitlist was successfully created." }
-        format.json { render :show, status: :created, location: @waitlist }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @waitlist.errors, status: :unprocessable_entity }
+    if Enrollment.find_by(student_id: waitlist_params[:student_id], course_id: waitlist_params[:course_id]) 
+      flash[:alert] = "Student has already enrolled for this course"
+      redirect_to new_waitlist_url
+    else
+      @waitlist = Waitlist.new(waitlist_params)
+      respond_to do |format|
+        if @waitlist.save
+          @course = Course.find(@waitlist.course_id)
+          check_status
+          format.html { redirect_to waitlist_url(@waitlist), notice: "Waitlist was successfully created." }
+          format.json { render :show, status: :created, location: @waitlist }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @waitlist.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

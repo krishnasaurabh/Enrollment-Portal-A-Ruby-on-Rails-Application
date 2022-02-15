@@ -15,6 +15,7 @@ class StudentsController < ApplicationController
 
   # GET /students/new
   def new
+    @is_new = true
     @user = User.new
     @student = Student.new
   end

@@ -14,12 +14,12 @@
   <% if is_admin?%>
     <div class="field">
       <%= form.label :name %><br />
-      <%= form.text_field :name, autofocus: true,value: student.user.name, autocomplete: "name" %>
+      <%= form.text_field :name, autofocus: true,value:  @is_new ? "" : student.user.name, autocomplete: "name" %>
     </div>
 
     <div class="field">
       <%= form.label :email %><br />
-      <%= form.email_field :email, value: student.user.email, autocomplete: "email" %>
+      <%= form.email_field :email, value: @is_new ? "" : student.user.email, autocomplete: "email" %>
     </div>
   <%end%>
 

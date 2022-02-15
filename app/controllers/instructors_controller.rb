@@ -14,6 +14,7 @@ class InstructorsController < ApplicationController
 
   # GET /instructors/new
   def new
+    @is_new = true
     @instructor = Instructor.new
   end
 

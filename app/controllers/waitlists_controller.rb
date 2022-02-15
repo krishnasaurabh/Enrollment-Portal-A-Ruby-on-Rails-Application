@@ -129,7 +129,7 @@ class WaitlistsController < ApplicationController
 
   def show_waitlist_course_for_student
     @waitlist = Waitlist.new
-    @course_id_waitlist = params[:course_id]
+    @course = Course.find params[:course_id]
     render :new
   end
 

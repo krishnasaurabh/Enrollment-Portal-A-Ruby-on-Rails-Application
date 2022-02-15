@@ -1,14 +1,17 @@
 <%= form_with(model: waitlist) do |form| %>
-
   <div class="form-group">
     <%= form.label :student_id %>
-    <%= form.select :student_id, options_for_select(Student.all.map{|stu| [stu.user.name, stu.id]}) ,{}, {include_blank: false, class:"form-control"}%>
+        <% if @course  %>
+      <%= form.select :student_id, options_for_select(Student.where.not(id: Waitlist.where(course_id: @course.id).map{|s| s.student_id}.compact).map{|stu| [stu.user.name, stu.id]}) ,{}, {include_blank: false, class:"form-control"}%>
+        <% else %>
+      <%= form.select :student_id, options_for_select(Student.all.map{|stu| [stu.user.name, stu.id]}) ,{}, {include_blank: false, class:"form-control"}%>
+        <% end %>
   </div>
-
+  
   <div class="form-group">
     <%= form.label :course_id %>
-    <% if @course_id_waitlist  %>
-      <%= form.text_field :course_id, value: @course_id_waitlist, readonly: true, class:"form-control"%>
+    <% if @course  %>
+      <%= form.text_field :course_id, value: @course.id, readonly: true, class:"form-control"%>
     <% else %>
           <%= form.select :course_id, options_for_select(Course.all.map{|c| [c.name, c.id]}) ,{}, {include_blank: false, class:"form-control"}%>
     <% end %>

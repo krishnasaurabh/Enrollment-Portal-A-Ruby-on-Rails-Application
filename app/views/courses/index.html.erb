@@ -15,7 +15,7 @@
       <th>Capacity</th>
       <th>Status</th>
       <th>Room</th>
-      <th colspan="3"></th>
+      <th colspan="3">Actions</th>
     </tr>
   </thead>
 
@@ -40,18 +40,23 @@
         <% end %>        
         </td>
         <td><%= course.room %></td>
-        <td><%= link_to 'Show', course %></td>
+        <td><%= link_to 'Show', course,  class: 'btn btn-secondary btn-sm'%></td>
         <% if is_student? %>
-          <td><%= link_to 'Enroll', enroll_course_path(course.id), data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Enroll', enroll_course_path(course.id), data: { confirm: 'Are you sure?' } , class: 'btn btn-primary btn-sm'%></td>
           <%if course.status == "waitlist"%>
-            <td><%= link_to 'Waitlist', waitlist_course_path(course.id), data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to 'Waitlist', waitlist_course_path(course.id), data: { confirm: 'Are you sure?' } , class: 'btn btn-primary btn-sm'%></td>
           <%end%>
         <% elsif is_instructor? && course.instructor_id == @instructor_id %>
-          <td><%= link_to 'Edit', edit_course_path(course) %></td>
-          <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Enrolled', enrolled_students_path(course), class: 'btn btn-primary btn-sm'%> </td>
+          <td><%= link_to 'Waitlisted', waitlisted_students_path(course), class: 'btn btn-primary btn-sm'%> </td>
+          <td><%= link_to 'Edit', edit_course_path(course) , class: 'btn btn-warning btn-sm'%></td>
+          <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } , class: 'btn btn-danger btn-sm'%></td>
+          
         <% elsif is_admin? %>
-          <td><%= link_to 'Edit', edit_course_path(course) %></td>
-          <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Enrolled', enrolled_students_path(course), class: 'btn btn-primary btn-sm'%> </td>
+          <td><%= link_to 'Waitlisted', waitlisted_students_path(course), class: 'btn btn-primary btn-sm'%> </td>
+          <td><%= link_to 'Edit', edit_course_path(course) , class: 'btn btn-warning btn-sm'%></td>
+          <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } , class: 'btn btn-danger btn-sm'%></td>
         <% end %>
       </tr>
     <% end %>

@@ -123,7 +123,7 @@ class EnrollmentsController < ApplicationController
 
   def show_enroll_course_for_student
     @enrollment = Enrollment.new
-    @course_id_enroll = params[:course_id]
+    @course = Course.find params[:course_id]
     render :new
   end
 

@@ -44,8 +44,9 @@
         <td><%= course.room %></td>
         <td><%= link_to 'Show', course,  class: 'btn btn-secondary btn-sm'%></td>
         <% if is_student? %>
-          <td><%= link_to 'Enroll', enroll_course_path(course.id), data: { confirm: 'Are you sure?' } , class: 'btn btn-primary btn-sm'%></td>
-          <%if course.status == "waitlist"%>
+          <%if course.status == "open"%>
+            <td><%= link_to 'Enroll', enroll_course_path(course.id), data: { confirm: 'Are you sure?' } , class: 'btn btn-primary btn-sm'%></td>
+          <%elsif course.status == "waitlist"%>
             <td><%= link_to 'Waitlist', waitlist_course_path(course.id), data: { confirm: 'Are you sure?' } , class: 'btn btn-primary btn-sm'%></td>
           <%end%>
         <% elsif is_instructor? && course.instructor_id == @instructor_id %>

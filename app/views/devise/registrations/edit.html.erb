@@ -8,6 +8,7 @@
     <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
   </div>
 
+  <%if !is_admin?%>
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autocomplete: "email" %>
@@ -30,6 +31,7 @@
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
+<%end%>
   <div class="field">
     <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
     <%= f.password_field :current_password, autocomplete: "current-password" %>

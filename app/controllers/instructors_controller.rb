@@ -42,7 +42,9 @@ class InstructorsController < ApplicationController
   def update
     respond_to do |format|
       if @instructor.update(instructor_params)
-        @instructor.user.update!(:name => params[:instructor][:name], :email =>  params[:instructor][:email])
+        if is_admin?
+          @instructor.user.update!(:name => params[:instructor][:name], :email =>  params[:instructor][:email])
+        end
         format.html { redirect_to instructor_url(@instructor), notice: "Instructor was successfully updated." }
         format.json { render :show, status: :ok, location: @instructor }
       else
@@ -72,8 +74,9 @@ class InstructorsController < ApplicationController
 
   # DELETE /instructors/1 or /instructors/1.json
   def destroy
+    user = User.find(@instructor.user.id)
     @instructor.destroy
-
+    user.destroy
     respond_to do |format|
       format.html { redirect_to instructors_url, notice: "Instructor was successfully destroyed." }
       format.json { head :no_content }

@@ -1,24 +1,26 @@
-# README
+# MyBiryaniPack
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a project for CSC517 which replicates MyPack portal course registration
 
-Things you may want to cover:
+The application is deployed at https://mybiryanipack.herokuapp.com/
 
-* Ruby version
+## Admin Credentials 
 
-* System dependencies
+There will only be one admin preconfigured and the credentials for the admin are
 
-* Configuration
+`email: SuperUser@ncsu.edu`
 
-* Database creation
+`password: MyStrongPassword1`
 
-* Database initialization
+## Some useful links to operations
 
-* How to run the test suite
+1. check student enrollments
+2. drop student enrollments
+3. create course
+4. edit course
+5. check waitlisted students for a course
+6. drop waitlist
+7. edit profile
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Edge-case scenarios
+1. 

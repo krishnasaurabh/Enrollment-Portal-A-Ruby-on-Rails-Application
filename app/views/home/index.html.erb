@@ -1,35 +1,63 @@
 <% if is_instructor? %> 
     <h2>Hello Instructor <%= current_user.name %></h2>
-    <%= link_to "All Courses", courses_path, class: 'card card-body' %> 
+
+    <%= link_to  courses_path, class: 'card level-3' do%> 
+    <h5>All Courses</h5>
+    <%end%>
+
 <br/>
-<%= link_to "My Courses", instructor_courses_path, class: 'card card-body' %> 
+    <%= link_to  instructor_courses_path, class: 'card level-3' do%> 
+    <h5>My Courses</h5>
+    <%end%>
 <br/>
-<%= link_to "Edit Profile", edit_user_registration_path, class: 'card card-body' %> 
+    <%= link_to  edit_user_registration_path, class: 'card level-3' do%> 
+    <h5>Edit Profile</h5>
+    <%end%>
 <% elsif is_student? %>
     <h2>Welcome, <%=current_user.name %></h2>
     <p>Following are the actions you are allowed to perform:</p>
     
-<%= link_to "Courses", courses_path, class: 'card card-body' %> 
+    <%= link_to  courses_path, class: 'card level-3' do%> 
+    <h5>Courses</h5>
+    <%end%>
 <br/>
-<%= link_to "My Enrollments", enrollments_path, class: 'card card-body' %> 
+    <%= link_to  enrollments_path, class: 'card level-3' do%> 
+    <h5>My Enrollments</h5>
+    <%end%>
 <br/>
-<%= link_to "My Waitlists", waitlists_path, class: 'card card-body' %> 
+    <%= link_to  waitlists_path, class: 'card level-3' do%> 
+    <h5>My Waitlists</h5>
+    <%end%>
 <br/>
-<%= link_to "Edit Profile", edit_user_registration_path, class: 'card card-body' %> 
+    <%= link_to  edit_user_registration_path, class: 'card level-3' do%> 
+    <h5>Edit Profile</h5>
+    <%end%>
 <br/>
 
 <% else %>
     <h1>Hi Admin <%= current_user.name %></h1>
-    <%= link_to "Courses", courses_path, class: 'card card-body' %> 
+        <%= link_to  courses_path, class: 'card level-3' do%> 
+    <h5>Courses</h5>
+    <%end%>
 <br/>
-<%= link_to "Enrollments", enrollments_path, class: 'card card-body' %> 
+    <%= link_to  enrollments_path, class: 'card level-3' do%> 
+    <h5>Enrollments</h5>
+    <%end%>
 <br/>
-<%= link_to "Waitlists", waitlists_path, class: 'card card-body' %> 
+    <%= link_to  waitlists_path, class: 'card level-3' do%> 
+    <h5>Waitlists</h5>
+    <%end%>
 <br/>
-<%= link_to "Students", students_path, class: 'card card-body' %> 
+    <%= link_to  students_path, class: 'card level-3' do%> 
+    <h5>Students</h5>
+    <%end%>
 <br/>
-<%= link_to "Instructors", instructors_path, class: 'card card-body' %> 
+    <%= link_to  instructors_path, class: 'card level-3' do%> 
+    <h5>Instructors</h5>
+    <%end%>
 <br/>
-<%= link_to "Edit Profile", edit_user_registration_path, class: 'card card-body' %> 
+    <%= link_to  edit_user_registration_path, class: 'card level-3' do%> 
+    <h5>Edit Profile</h5>
+    <%end%>
 <br/>
 <% end %>

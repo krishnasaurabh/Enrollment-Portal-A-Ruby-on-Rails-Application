@@ -44,8 +44,10 @@ class InstructorsController < ApplicationController
       if @instructor.update(instructor_params)
         if is_admin?
           @instructor.user.update!(:name => params[:instructor][:name], :email =>  params[:instructor][:email])
+          format.html { redirect_to instructor_url(@instructor), notice: "Instructor was successfully updated." }
+        else
+          format.html { redirect_to root_path, notice: "Instructor was successfully updated." }
         end
-        format.html { redirect_to instructor_url(@instructor), notice: "Instructor was successfully updated." }
         format.json { render :show, status: :ok, location: @instructor }
       else
         format.html { render :edit, status: :unprocessable_entity }

@@ -17,7 +17,6 @@ class StudentsController < ApplicationController
   def new
     @user = User.new
     @student = Student.new
-
   end
 
   # GET /students/1/edit
@@ -47,8 +46,10 @@ class StudentsController < ApplicationController
       if @student.update(student_params) 
         if is_admin?
           @student.user.update!(:name => params[:student][:name], :email =>  params[:student][:email])
+          format.html { redirect_to student_url(@student), notice: "Student was successfully updated." }
+        else
+          format.html { redirect_to root_path, notice: "Student was successfully updated." }
         end
-        format.html { redirect_to student_url(@student), notice: "Student was successfully updated." }
         format.json { render :show, status: :ok, location: @student }
       else
         format.html { render :edit, status: :unprocessable_entity }

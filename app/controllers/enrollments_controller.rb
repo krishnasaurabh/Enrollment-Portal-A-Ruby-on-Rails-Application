@@ -1,7 +1,7 @@
 class EnrollmentsController < ApplicationController
   before_action :set_enrollment, only: %i[ show edit update destroy ]
   before_action :correct_student?, only: %i[ edit update destroy show ]
-  before_action :correct_student?, only: %i[ edit update destroy show  ]
+  before_action :correct_instructor?, only: %i[ edit update destroy show create ]
 
 
   # GET /enrollments or /enrollments.json
@@ -27,29 +27,26 @@ class EnrollmentsController < ApplicationController
 
   # GET /enrollments/1/edit
   def edit
-    render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
-    # flash[:alert] = "Not authorised to perform this action"
-    # redirect_to courses_path
+    flash[:alert] = "Not authorised to perform this action"
+    redirect_to courses_path
   end
 
   # POST /enrollments or /enrollments.json
   def create
-    if is_instructor?
-      enroll_course_for_student
-    else
-      @enrollment = Enrollment.new(enrollment_params)
-      respond_to do |format|
-        if @enrollment.save
-          @course = Course.find(@enrollment.course_id)
-          check_status
-          format.html { redirect_to enrolled_students_path(@course), notice: "Enrollment was successfully created." }
-          format.json { render :enrolled_students_path, status: :created, location: @course }
-        else
-          format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: @enrollment.errors, status: :unprocessable_entity }
-        end
+    
+    enroll_course
+    respond_to do |format|
+      if @enrollment.save
+        @course = Course.find(@enrollment.course_id)
+        check_status
+        format.html { redirect_to enrolled_students_path(@course.id), notice: "Waitlist was successfully created." }
+        format.json { render :enrolled_students_path, status: :created, location: @course }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @enrollment.errors, status: :unprocessable_entity }
       end
     end
+
   end
 
   # PATCH/PUT /enrollments/1 or /enrollments/1.json
@@ -84,25 +81,44 @@ class EnrollmentsController < ApplicationController
   end
 
   def enroll_course
+    @enrollment = Enrollment.new
+
+    if !is_student? && (!enrollment_params[:course_id] || !enrollment_params[:student_id])
+      flash[:alert] = "course and student should not be empty"
+      return
+    end
     if is_student?
       @course = Course.find(params[:id])
       @student = Student.find_by user_id: current_user.id
-      total_enrollments = Enrollment.where(course_id: @course.id).count
-      if Enrollment.find_by(student_id: @student.id, course_id: @course.id)
-        flash[:alert] = "You have already registered for this course"
-      elsif @course.capacity > total_enrollments and @student != nil
-        enrollment = Enrollment.new(:student_id => @student.id , :course_id => params[:id])
-        enrollment.save
-        check_status
-      elsif @course.capacity <= total_enrollments
-        if @course.status == 'closed'
-          flash[:alert] = "Course status is closed, please keep checking MyBiryaniPack protal when it opens up."
-        elsif @course.status == 'waitlist'
-          flash[:alert] = "Course status is waitlist, please click waitlist if you want to get added to the course waitlist."
-        end
+    else
+      @course = Course.find(enrollment_params[:course_id])
+      @student = Student.find enrollment_params[:student_id]
+    end
+
+    total_waitlist = Waitlist.where(course_id: @course.id).count
+    total_enrollment = Enrollment.where(course_id: @course.id).count
+    
+    if Enrollment.find_by(student_id: @student.id, course_id: @course.id)
+      flash[:alert] = "Student is already registered for this course"
+    elsif @course.capacity > total_enrollment and @student != nil
+      @enrollment.student_id = @student.id 
+      @enrollment.course_id = @course.id
+      if is_student?
+        flash[:alert] = "Successfully enrolled for the course #{@course.name}"
+        @enrollment.save
+      end
+      check_status
+    elsif @course.capacity <= total_enrollment
+      if @course.status == 'closed'
+        flash[:alert] = "Course status is closed, please keep checking MyBiryaniPack protal when it opens up."
+      elsif @course.status == 'waitlist'
+        flash[:alert] = "Course status is waitlist, please click waitlist if you want to get added to the course waitlist."
       end
     end
-    redirect_to courses_path
+
+    if is_student?
+      redirect_to courses_path
+    end
   end
 
   def show_enroll_course_for_student
@@ -111,23 +127,6 @@ class EnrollmentsController < ApplicationController
     render :new
   end
 
-
-  def enroll_course_for_student
-    @course = Course.find(enrollment_params[:course_id])
-    @instructor = Instructor.find_by user_id: current_user.id
-    if @course.instructor_id != @instructor.id #IF the current course is not by this instructor
-      flash[:alert] = "Not authorised to perform this action"
-    elsif Enrollment.find_by(enrollment_params)
-      flash[:alert] = "The student is already registered for this course"
-    elsif @course.status == 'open'
-      enrollment = Enrollment.new(enrollment_params)
-      enrollment.save
-      check_status
-    elsif @course.status == 'closed'
-      flash[:alert] = "Course status is closed, please keep checking MyBiryaniPack protal when it opens up."
-    end
-    redirect_to courses_path
-  end
 
   def move_students_from_waitlist_to_enrolled
     total_enrollments = Enrollment.where(course_id: @course.id).count

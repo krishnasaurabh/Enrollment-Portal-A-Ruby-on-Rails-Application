@@ -1,8 +1,35 @@
 <% if is_instructor? %> 
     <h2>Hello Instructor <%= current_user.name %></h2>
+    <%= link_to "All Courses", courses_path, class: 'card card-body' %> 
+<br/>
+<%= link_to "My Courses", instructor_courses_path, class: 'card card-body' %> 
+<br/>
+<%= link_to "Edit Profile", edit_user_registration_path, class: 'card card-body' %> 
 <% elsif is_student? %>
     <h2>Welcome, <%=current_user.name %></h2>
     <p>Following are the actions you are allowed to perform:</p>
+    
+<%= link_to "Courses", courses_path, class: 'card card-body' %> 
+<br/>
+<%= link_to "My Enrollments", enrollments_path, class: 'card card-body' %> 
+<br/>
+<%= link_to "My Waitlists", waitlists_path, class: 'card card-body' %> 
+<br/>
+<%= link_to "Edit Profile", edit_user_registration_path, class: 'card card-body' %> 
+<br/>
+
 <% else %>
     <h1>Hi Admin <%= current_user.name %></h1>
+    <%= link_to "Courses", courses_path, class: 'card card-body' %> 
+<br/>
+<%= link_to "Enrollments", enrollments_path, class: 'card card-body' %> 
+<br/>
+<%= link_to "Waitlists", waitlists_path, class: 'card card-body' %> 
+<br/>
+<%= link_to "Students", students_path, class: 'card card-body' %> 
+<br/>
+<%= link_to "Instructors", instructors_path, class: 'card card-body' %> 
+<br/>
+<%= link_to "Edit Profile", edit_user_registration_path, class: 'card card-body' %> 
+<br/>
 <% end %>

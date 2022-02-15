@@ -60,8 +60,9 @@
   <%= @course.instructor_id %>
 </p>
 
-<%= link_to 'Enroll Students', show_enroll_course_for_student_path(@course) %> |
-<%= link_to 'Waitlisted Students', waitlisted_students_path(@course) %> |
-<%= link_to 'Enrolled Students', enrolled_students_path(@course) %> |
-<%= link_to 'Edit', edit_course_path(@course) %> |
-<%= link_to 'Back', courses_path %>
+<%= link_to 'Enroll Students', show_enroll_course_for_student_path(@course), class: 'btn btn-primary'%> 
+<%= link_to 'Waitlist Students', show_waitlist_course_for_student_path(@course), class: 'btn btn-primary'%> 
+<%= link_to 'Waitlisted Students', waitlisted_students_path(@course) , class: 'btn btn-primary'%> 
+<%= link_to 'Enrolled Students', enrolled_students_path(@course), class: 'btn btn-primary' %> 
+<%= link_to 'Edit', edit_course_path(@course) , class: 'btn btn-primary'%> 
+<%= link_to 'Back', courses_path, class: 'btn btn-primary' %>

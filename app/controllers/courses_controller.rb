@@ -11,6 +11,14 @@ class CoursesController < ApplicationController
     end
   end
 
+  def instructor_courses
+    if is_instructor?
+      @instructor_id = Instructor.find_by(user_id: current_user.id).id
+      @courses = Course.where instructor_id: @instructor_id
+    end
+    render :index
+  end
+
   # GET /courses/1 or /courses/1.json
   def show
   end

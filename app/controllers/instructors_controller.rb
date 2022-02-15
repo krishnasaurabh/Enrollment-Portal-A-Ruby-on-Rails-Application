@@ -1,5 +1,7 @@
 class InstructorsController < ApplicationController
   before_action :set_instructor, only: %i[ show edit update destroy ]
+  before_action :correct_student?
+  before_action :correct_instructor?
 
   # GET /instructors or /instructors.json
   def index
@@ -40,11 +42,30 @@ class InstructorsController < ApplicationController
   def update
     respond_to do |format|
       if @instructor.update(instructor_params)
+        @instructor.user.update!(:name => params[:instructor][:name], :email =>  params[:instructor][:email])
         format.html { redirect_to instructor_url(@instructor), notice: "Instructor was successfully updated." }
         format.json { render :show, status: :ok, location: @instructor }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @instructor.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def correct_student?
+    @student = Student.find_by user_id: current_user.id
+    if !@student.nil?
+       flash[:alert] = "Not authorised to perform this action"
+       redirect_to courses_path
+    end
+  end
+
+  def correct_instructor?
+    if is_instructor?
+      @cur_instructor = Instructor.find_by user_id: current_user.id
+      if !@cur_instructor.nil? && @instructor.id!=@cur_instructor.id
+        flash[:alert] = "Not authorised to perform this action"
+        redirect_to courses_path
       end
     end
   end

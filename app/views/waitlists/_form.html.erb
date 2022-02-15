@@ -1,15 +1,4 @@
 <%= form_with(model: waitlist) do |form| %>
-  <% if waitlist.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(waitlist.errors.count, "error") %> prohibited this waitlist from being saved:</h2>
-
-      <ul>
-        <% waitlist.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
 
   <div class="form-group">
     <%= form.label :student_id %>

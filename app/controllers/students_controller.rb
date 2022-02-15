@@ -1,5 +1,8 @@
 class StudentsController < ApplicationController
   before_action :set_student, only: %i[ show edit update destroy ]
+  before_action :deny_access, only: %i[ destroy new create index ]
+  before_action :correct_student?, only: %i[ edit update show]
+  before_action :correct_instructor?
 
   # GET /students or /students.json
   def index
@@ -41,7 +44,8 @@ class StudentsController < ApplicationController
   # PATCH/PUT /students/1 or /students/1.json
   def update
     respond_to do |format|
-      if @student.update(student_params)
+      if @student.update(student_params) 
+        @student.user.update!(:name => params[:student][:name], :email =>  params[:student][:email])
         format.html { redirect_to student_url(@student), notice: "Student was successfully updated." }
         format.json { render :show, status: :ok, location: @student }
       else
@@ -61,6 +65,30 @@ class StudentsController < ApplicationController
     end
   end
 
+  def deny_access
+    if !is_admin?
+      flash[:alert] = "Not authorised to perform this action"
+      redirect_to courses_path
+    end
+  end
+
+  def correct_student?
+    @cur_student = Student.find_by user_id: current_user.id
+    if !@cur_student.nil? && @student.id!=@cur_student.id
+       flash[:alert] = "Not authorised to perform this action"
+       redirect_to courses_path
+    end
+  end
+
+  def correct_instructor?
+    if is_instructor?
+      @instructor = Instructor.find_by user_id: current_user.id
+      if !@instructor.nil? 
+        flash[:alert] = "Not authorised to perform this action"
+        redirect_to courses_path
+      end
+    end
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_student

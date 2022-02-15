@@ -16,7 +16,7 @@
       <tr>
         <td><%= enrolled.student.user.name %></td>
         <td><%= enrolled.student.user.email %></td>
-        <td><%= link_to 'Drop', enrolled, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Drop', enrolled, method: :delete, data: { confirm: 'Are you sure?' } , class: 'btn btn-primary btn-sm' %></td>
       </tr>
     <% end %>
   </tbody>

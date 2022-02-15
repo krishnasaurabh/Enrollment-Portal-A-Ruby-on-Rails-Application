@@ -135,7 +135,7 @@ class WaitlistsController < ApplicationController
 
   def correct_student?
     @student = Student.find_by user_id: current_user.id
-    if !@student.nil? && @student.id!=@enrollment.student_id
+    if !@student.nil? && @student.id!=@waitlist.student_id
        flash[:alert] = "Not authorised to perform this action"
        redirect_to courses_path
     end

@@ -16,7 +16,7 @@
       <tr>
         <td><%= waitlist.student.user.name %></td>
         <td><%= waitlist.course.name %></td>
-        <td><%= link_to 'Drop Waitlist', waitlist, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Drop Waitlist', waitlist, method: :delete, data: { confirm: 'Are you sure?' } , class: 'btn btn-danger btn-sm'%></td>
       </tr>
     <% end %>
   </tbody>
@@ -24,5 +24,5 @@
 <br>
 
 <% if is_admin? %>
-<%= link_to 'New Waitlist', new_waitlist_path %>
+<%= link_to 'New Waitlist', new_waitlist_path , class: 'btn btn-primary' %>
 <%end%>

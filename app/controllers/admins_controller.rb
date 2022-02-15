@@ -1,5 +1,6 @@
 class AdminsController < ApplicationController
   before_action :set_admin, only: %i[ show edit update destroy ]
+  before_action :deny_access, except: %i[ edit update ]
 
   # GET /admins or /admins.json
   def index
@@ -57,6 +58,10 @@ class AdminsController < ApplicationController
     end
   end
 
+  def deny_access
+    flash[:alert] = "Not authorised to perform this action"
+    redirect_to root_path
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_admin

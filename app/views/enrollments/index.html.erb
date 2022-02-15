@@ -16,7 +16,7 @@
       <tr>
         <td><%= enrollment.student.user.name %></td>
         <td><%= enrollment.course.name %></td>
-        <td><%= link_to 'Drop Enrollment', enrollment, method: :delete, data: { confirm: 'Are you sure to drop the course?' } %></td>
+        <td><%= link_to 'Drop Enrollment', enrollment, method: :delete, data: { confirm: 'Are you sure to drop the course?' } , class: 'btn btn-primary btn-sm' %></td>
       </tr>
     <% end %>
   </tbody>
@@ -24,4 +24,6 @@
 
 <br>
 
-<%= link_to 'New Enrollment', new_enrollment_path %>
+<% if !is_student? %>
+<%= link_to 'New Enrollment', new_enrollment_path , class: 'btn btn-primary' %>
+<%end%>

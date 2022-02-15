@@ -16,7 +16,7 @@
       <tr>
         <td><%= waitlisted.student.user.name %></td>
         <td><%= waitlisted.student.user.email %></td>
-        <td><%= link_to 'Drop', waitlisted, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Drop', waitlisted, method: :delete, data: { confirm: 'Are you sure?' } , class: 'btn btn-primary btn-sm' %></td>
       </tr>
     <% end %>
   </tbody>

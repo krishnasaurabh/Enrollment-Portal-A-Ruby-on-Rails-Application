@@ -13,6 +13,7 @@
       <th>End time</th>
       <th>Course code</th>
       <th>Capacity</th>
+      <th>Waitlist Capacity</th>
       <th>Status</th>
       <th>Room</th>
       <th colspan="3">Actions</th>
@@ -30,6 +31,7 @@
         <td><%= course.end_time %></td>
         <td><%= course.course_code %></td>
         <td><%= course.capacity %></td>
+        <td><%= course.waitlist_capacity %></td>
         <td>
         <% if course.status == "open"%>
         <span class="btn btn-success btn-sm">Open</span>

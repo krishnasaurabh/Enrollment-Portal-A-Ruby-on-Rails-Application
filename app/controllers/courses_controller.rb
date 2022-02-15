@@ -102,7 +102,7 @@ class CoursesController < ApplicationController
   def correct_instructor?
     if is_instructor?
       @instructor = Instructor.find_by user_id: current_user.id
-      if @course.instructor_id!=@instructor.id
+      if @course.instructor.id!=@instructor.id
         flash[:alert] = "Not authorised to perform this action"
         redirect_to courses_path
       end

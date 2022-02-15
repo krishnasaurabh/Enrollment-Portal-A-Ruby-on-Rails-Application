@@ -144,7 +144,13 @@ class WaitlistsController < ApplicationController
   def correct_instructor?
     if is_instructor?
       @instructor = Instructor.find_by user_id: current_user.id
-      if !@instructor.nil? && @instructor.id!=@enrollment.course.instructor_id
+      course_instructor_id = 0
+      if @waitlist
+        course_instructor_id = @waitlist.course.instructor.id
+      else
+        course_instructor_id = Course.find(waitlist_params[:course_id]).instructor.id
+      end
+      if !@instructor.nil? && @instructor.id!=course_instructor_id
         flash[:alert] = "Not authorised to perform this action"
         redirect_to courses_path
       end

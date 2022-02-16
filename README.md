@@ -23,4 +23,5 @@ There will only be one admin preconfigured and the credentials for the admin are
 7. edit profile
 
 ## Edge-case scenarios
-1. 
+1. Given: Instructor has created a course with capacity 30 and there are already 29 students enrolled<br> When: New student enrolls to the course<br> Then: The status of the course changes to "Waitlist"
+2. Given: The total waitlist capacity is 5 and currently 4 students in the waitlist <br>When: A new student enters the waitlist<br> Then: The course status changes to "Closed"

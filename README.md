@@ -14,13 +14,13 @@ There will only be one admin preconfigured and the credentials for the admin are
 
 ## Some useful links to operations
 
-1. check student enrollments
-2. drop student enrollments
-3. create course
-4. edit course
-5. check waitlisted students for a course
-6. drop waitlist
-7. edit profile
+1. [check student enrollments](https://mybiryanipack.herokuapp.com/enrollments)
+2. [drop student enrollments](https://mybiryanipack.herokuapp.com/enrollments)
+3. [create course](https://mybiryanipack.herokuapp.com/courses/new)
+4. [edit course](https://mybiryanipack.herokuapp.com/courses)
+5. [check waitlisted students for a course](https://mybiryanipack.herokuapp.com/courses)
+6. [drop waitlist](https://mybiryanipack.herokuapp.com/instructor_courses)
+7. [edit profile](https://mybiryanipack.herokuapp.com/users/edit)
 
 ## Edge-case scenarios
 1. Given: Instructor has created a course with capacity 30 and there are already 29 students enrolled<br> When: New student enrolls to the course<br> Then: The status of the course changes to "Waitlist"

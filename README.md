@@ -30,3 +30,4 @@ There will only be one admin preconfigured and the credentials for the admin are
 5. Given: An Instructor has created a new course<br> When: Another Instructor tries to enroll students to the course<br> Then: Instructor should not be authorised
 6. Given: A course created by an Instructor<br> When: An another Instructor/Student clicks on show <br> Then: The Instructor/Student should not be able to see the enrolled students for the course
 7. Given: An Instructor has created a course<br> When: Another Instructor tries to enroll students the course <br> Then: Instructor should not be authorised
+8. Given: An Instructor creates a course<br> And: Students have enrolled to the course<br> When: Instructor drops the course<br> Then: The enrollments and waitlists should be dropped.

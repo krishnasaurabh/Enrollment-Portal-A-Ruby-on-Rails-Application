@@ -1,3 +1,36 @@
+<style>
+.card {
+  background-color: #fff;
+  border-radius: 4px;
+  max-width: 400px;
+  height: 100px;
+  position: relative;
+  padding: 34px;
+  color: #444;
+  cursor: pointer;
+}
+.card:before {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: #ccc;
+  left: 20px;
+  right: 20px;
+  bottom: 0;
+  top: 50%;
+  z-index: -1;
+  box-shadow: 0 0 40px #999999;
+  transition: box-shadow 0.2s ease-in-out;
+}
+.card.level-3:hover:before {
+  box-shadow: 0 0 80px #999999;
+}
+.card h5 {
+  font-weight: 300;
+  font-size: 30px;
+}
+
+</style>
 <% if is_instructor? %> 
     <h2>Hello Instructor <%= current_user.name %></h2>
 

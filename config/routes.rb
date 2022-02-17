@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get 'home/index'
   root 'home#index'
   get '/enroll_course/:id' , to: 'enrollments#enroll_course', as: 'enroll_course'
+  get '/about_us' , to: 'home#about_us', as: 'about_us'
   get '/waitlist_course/:id' , to: 'waitlists#waitlist_course', as: 'waitlist_course'
   get '/instructor_courses' , to: 'courses#instructor_courses', as: 'instructor_courses'
   get '/courses/:id/enrolled_students' , to: 'courses#enrolled_students', as: 'enrolled_students'

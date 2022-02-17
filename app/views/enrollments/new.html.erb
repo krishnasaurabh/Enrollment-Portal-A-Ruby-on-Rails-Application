@@ -2,4 +2,8 @@
 
 <%= render 'form', enrollment: @enrollment %>
 
+<%if @course%>
+<%= link_to 'Back', enrolled_students_path(@course) , class: 'btn btn-primary' %>
+<%else%>
 <%= link_to 'Back', enrollments_path , class: 'btn btn-primary' %>
+<%end%>

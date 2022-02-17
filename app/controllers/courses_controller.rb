@@ -12,6 +12,7 @@ class CoursesController < ApplicationController
   end
 
   def instructor_courses
+    @courses = Course.all
     if is_instructor?
       @instructor_id = Instructor.find_by(user_id: current_user.id).id
       @courses = Course.where instructor_id: @instructor_id

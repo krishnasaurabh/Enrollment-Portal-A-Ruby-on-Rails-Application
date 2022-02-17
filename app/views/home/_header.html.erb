@@ -37,6 +37,9 @@
               <div class="nav-link" ><%=  current_user.name%></div>
             </li>
             <li class="nav-item">
+              <div class="nav-link" >Role: <% if is_student?%><b>Student</b> <%elsif is_instructor? %> <b><i>Instructor</i></b><%elsif is_admin?%> <u>Admin</u> <%end%></div>
+            </li>
+            <li class="nav-item">
               <%= link_to 'Edit Profile',edit_user_registration_path , class:"nav-link"  %>
             </li>
             <li class="nav-item">

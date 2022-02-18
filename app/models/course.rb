@@ -1,4 +1,7 @@
 class Course < ApplicationRecord
+    include ActiveModel::Dirty
+    validate :capacity_change, :if => :capacity_changed? || :waitlist_capacity_changed?
+
     belongs_to :instructor
     has_many :enrollments, dependent: :delete_all
     has_many :waitlists, dependent: :delete_all
@@ -20,6 +23,15 @@ class Course < ApplicationRecord
     enum status: [:open, :closed, :waitlist], _prefix: true
 
 
+    def capacity_change
+
+
+        if capacity_was && capacity < capacity_was
+            errors.add(:capacity, "Can only be increased") 
+        elsif waitlist_capacity_was && waitlist_capacity < waitlist_capacity_was
+            errors.add(:waitlist_capacity,  "Can only be increased")
+        end
+    end
 
     def validate_week_one_two
         if weekday_two.present? && weekday_one == weekday_two

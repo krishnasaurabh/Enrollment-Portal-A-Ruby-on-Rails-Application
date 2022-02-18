@@ -64,6 +64,7 @@ class StudentsController < ApplicationController
     user = User.find(@student.user.id)
     @student.destroy
     user.destroy
+    fill_enrollments_with_waitlist
     respond_to do |format|
       format.html { redirect_to students_url, notice: "Student was successfully destroyed." }
       format.json { head :no_content }

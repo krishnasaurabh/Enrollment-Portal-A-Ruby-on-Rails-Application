@@ -55,7 +55,9 @@ class CoursesController < ApplicationController
   # PATCH/PUT /courses/1 or /courses/1.json
   def update
     respond_to do |format|
+
       if @course.update(course_params)
+        fill_enrollments_with_waitlist
         check_status
         format.html { redirect_to course_url(@course), notice: "Course was successfully updated." }
         format.json { render :show, status: :ok, location: @course }

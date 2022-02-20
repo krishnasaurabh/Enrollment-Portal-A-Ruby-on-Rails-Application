@@ -14,31 +14,31 @@
   <% if is_admin?%>
     <div class="field">
       <%= form.label :name %><br />
-      <%= form.text_field :name, autofocus: true,value:  @is_new ? "" : student.user.name, autocomplete: "name" %>
+      <%= form.text_field :name, autofocus: true,value:  @is_new ? "" : student.user.name, autocomplete: "name" , class:"form-control"%>
     </div>
 
     <div class="field">
       <%= form.label :email %><br />
-      <%= form.email_field :email, value: @is_new ? "" : student.user.email, autocomplete: "email" %>
+      <%= form.email_field :email, value: @is_new ? "" : student.user.email, autocomplete: "email", class:"form-control"%>
     </div>
   <%end%>
 
   <div class="field">
-    <%= form.label :date_of_birth %>
-    <%= form.date_select :date_of_birth %>
+    <%= form.label :date_of_birth %><br/>
+    <%= form.date_select :date_of_birth, start_year: 1940, end_year: Date.today.year , class:"form-control"%>
   </div>
 
   <div class="field">
-    <%= form.label :phone_number %>
-    <%= form.text_field :phone_number %>
+    <%= form.label :phone_number, class:"form-label" %>
+    <%= form.text_field :phone_number , class:"form-control"%>
   </div>
 
   <div class="field">
     <%= form.label :major %>
-    <%= form.text_field :major %>
+    <%= form.text_field :major , class:"form-control"%>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: "btn btn-primary"%>
   </div>
 <% end %>

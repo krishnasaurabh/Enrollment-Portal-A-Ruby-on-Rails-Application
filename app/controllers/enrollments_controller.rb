@@ -119,7 +119,7 @@ class EnrollmentsController < ApplicationController
     end
 
     if is_student?
-      redirect_to root_path
+      redirect_to courses_path
     end
   end
 

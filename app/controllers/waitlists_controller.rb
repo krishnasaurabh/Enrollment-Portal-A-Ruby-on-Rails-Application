@@ -131,7 +131,7 @@ class WaitlistsController < ApplicationController
       flash[:alert] = "Course status is closed, please keep checking MyBiryaniPack protal when it opens up."
     end
     if is_student?
-      redirect_to root_path
+      redirect_to courses_path
     end
   end
 

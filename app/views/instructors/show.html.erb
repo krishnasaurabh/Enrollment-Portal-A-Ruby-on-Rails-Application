@@ -1,9 +1,47 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Department:</strong>
-  <%= @instructor.department %>
-</p>
+<h1>My Profile</h1>
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <strong>Instructor ID</strong>
+    </div>
+    <div class="col-9">
+      <%= @instructor.id %><br>
+    </div>
+  
+  </div>
+  <div class="row">
+    <div class="col">
+      <strong>Name</strong>
+    </div>
+    <div class="col-9">
+      <%= @instructor.user.name %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <strong>Email</strong>
+    </div>
+    <div class="col-9">
+      <%= @instructor.user.email %>
+    </div>
+    
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <strong>Department</strong>
+    </div>
+    <div class="col-9">
+      <%= @instructor.department %>
+    </div>
+    
+  </div>
+</div>
+<br>
 
 <%= link_to 'Edit', edit_instructor_path(@instructor) , class: 'btn btn-primary' %> |
-<%= link_to 'Back', instructors_path , class: 'btn btn-primary' %>
+<%= link_to 'Back', :back , class: 'btn btn-primary' %>

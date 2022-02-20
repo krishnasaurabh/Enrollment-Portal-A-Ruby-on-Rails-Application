@@ -45,7 +45,13 @@
 <br/>
     <%= link_to  edit_instructor_path(get_cur_instructor), class: 'card level-3' do%> 
     <h5>Edit Profile</h5>
-    <%end%>
+<%end%>
+<br/>
+    <%= link_to  instructor_path(get_cur_instructor), class: 'card level-3' do%> 
+    <h5>My Profile</h5>
+<%end%>
+
+
 <% elsif is_student? %>
     <h2>Welcome, <%=current_user.name %></h2>
     <p>Following are the actions you are allowed to perform:</p>
@@ -65,6 +71,7 @@
     <%= link_to  edit_student_path(get_cur_student), class: 'card level-3' do%> 
     <h5>Edit Profile</h5>
     <%end%>
+
 <br/>
 
 <% else %>

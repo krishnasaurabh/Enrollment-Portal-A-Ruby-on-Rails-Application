@@ -131,7 +131,7 @@ class WaitlistsController < ApplicationController
       flash[:alert] = "Course status is closed, please keep checking MyBiryaniPack protal when it opens up."
     end
     if is_student?
-      redirect_to courses_path
+      redirect_to root_path
     end
   end
 
@@ -145,7 +145,7 @@ class WaitlistsController < ApplicationController
     @student = Student.find_by user_id: current_user.id
     if !@student.nil? && @student.id!=@waitlist.student_id
        flash[:alert] = "Not authorised to perform this action"
-       redirect_to courses_path
+       redirect_to root_path
     end
   end
 
@@ -160,7 +160,7 @@ class WaitlistsController < ApplicationController
       end
       if !@instructor.nil? && @instructor.id!=course_instructor_id
         flash[:alert] = "Not authorised to perform this action"
-        redirect_to courses_path
+        redirect_to root_path
       end
     end
   end

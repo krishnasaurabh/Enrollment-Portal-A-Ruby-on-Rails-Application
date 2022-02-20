@@ -61,16 +61,20 @@ class InstructorsController < ApplicationController
     @student = Student.find_by user_id: current_user.id
     if !@student.nil?
        flash[:alert] = "Not authorised to perform this action"
-       redirect_to courses_path
+       redirect_to root_path
     end
   end
 
   def correct_instructor?
     if is_instructor?
+      if action_name == "index"
+        redirect_to root_path
+        return
+      end
       @cur_instructor = Instructor.find_by user_id: current_user.id
       if !@cur_instructor.nil? && @instructor.id!=@cur_instructor.id
         flash[:alert] = "Not authorised to perform this action"
-        redirect_to courses_path
+        redirect_to root_path
       end
     end
   end

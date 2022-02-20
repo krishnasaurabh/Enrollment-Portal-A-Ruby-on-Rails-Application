@@ -74,7 +74,7 @@ class StudentsController < ApplicationController
   def deny_access
     if !is_admin?
       flash[:alert] = "Not authorised to perform this action"
-      redirect_to courses_path
+      redirect_to root_path
     end
   end
 
@@ -82,7 +82,7 @@ class StudentsController < ApplicationController
     @cur_student = Student.find_by user_id: current_user.id
     if !@cur_student.nil? && @student.id!=@cur_student.id
        flash[:alert] = "Not authorised to perform this action"
-       redirect_to courses_path
+       redirect_to root_path
     end
   end
 
@@ -91,7 +91,7 @@ class StudentsController < ApplicationController
       @instructor = Instructor.find_by user_id: current_user.id
       if !@instructor.nil? 
         flash[:alert] = "Not authorised to perform this action"
-        redirect_to courses_path
+        redirect_to root_path
       end
     end
   end

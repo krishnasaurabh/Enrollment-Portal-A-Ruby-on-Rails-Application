@@ -28,7 +28,7 @@ class EnrollmentsController < ApplicationController
   # GET /enrollments/1/edit
   def edit
     flash[:alert] = "Not authorised to perform this action"
-    redirect_to courses_path
+    redirect_to root_path
   end
 
   # POST /enrollments or /enrollments.json
@@ -119,7 +119,7 @@ class EnrollmentsController < ApplicationController
     end
 
     if is_student?
-      redirect_to courses_path
+      redirect_to root_path
     end
   end
 
@@ -176,7 +176,7 @@ class EnrollmentsController < ApplicationController
       end
       if !@instructor.nil? && @instructor.id != course_instructor_id
         flash[:alert] = "Not authorised to perform this action"
-        redirect_to courses_path
+        redirect_to root_path
       end
     end
   end

@@ -1,19 +1,65 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Date of birth:</strong>
-  <%= @student.date_of_birth %>
-</p>
+<h1>My Profile</h1>
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <strong>Student ID</strong>
+    </div>
+    <div class="col-9">
+      <%= @student.id %><br>
+    </div>
+  
+  </div>
+  <div class="row">
+    <div class="col">
+      <strong>Name</strong>
+    </div>
+    <div class="col-9">
+      <%= @student.user.name %>
+    </div>
+  </div>
 
-<p>
-  <strong>Phone number:</strong>
-  <%= @student.phone_number %>
-</p>
+  <div class="row">
+    <div class="col">
+      <strong>Email</strong>
+    </div>
+    <div class="col-9">
+      <%= @student.user.email %>
+    </div>
+    
+  </div>
 
-<p>
-  <strong>Major:</strong>
-  <%= @student.major %>
-</p>
+  <div class="row">
+    <div class="col">
+      <strong>Date of Birth</strong>
+    </div>
+    <div class="col-9">
+      <%= @student.date_of_birth %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <strong>Phone Number</strong>
+    </div>
+    <div class="col-9">
+      <%= @student.phone_number %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <strong>Major</strong>
+    </div>
+    <div class="col-9">
+      <%= @student.major %>
+    </div>
+  </div>
+
+</div>
+<br>
 
 <%= link_to 'Edit', edit_student_path(@student) , class: 'btn btn-primary' %> |
-<%= link_to 'Back', students_path , class: 'btn btn-primary' %>
+<%= link_to 'Back', :back , class: 'btn btn-primary' %>

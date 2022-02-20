@@ -1,5 +1,6 @@
 class StudentsController < ApplicationController
   before_action :set_student, only: %i[ show edit update destroy ]
+  skip_before_action :check_student_instructor_registered, only: %i[new create]
   before_action :deny_access, only: %i[ destroy new create index ]
   before_action :correct_student?, only: %i[ edit update show]
   before_action :correct_instructor?
@@ -26,9 +27,13 @@ class StudentsController < ApplicationController
 
   # POST /students or /students.json
   def create
-    user = User.create!(:name => params['student']['name'],:email => params['student']["email"], :password => "defaultpassword",:user_type => "Student")
     @student = Student.new(student_params)
-    @student.user_id = user.id
+    if is_student?
+      @student.user_id = current_user.id
+    else
+      user = User.create!(:name => params['student']['name'],:email => params['student']["email"], :password => "defaultpassword",:user_type => "Student")
+      @student.user_id = user.id
+    end
 
     respond_to do |format|
       if @student.save
@@ -72,9 +77,11 @@ class StudentsController < ApplicationController
   end
 
   def deny_access
-    if !is_admin?
+    if (action_name == "new" || action_name == "create") && !Student.exists?(user_id:current_user.id)
+      return
+    elsif !is_admin?
       flash[:alert] = "Not authorised to perform this action"
-      redirect_to courses_path
+      redirect_to root_path
     end
   end
 
@@ -82,7 +89,7 @@ class StudentsController < ApplicationController
     @cur_student = Student.find_by user_id: current_user.id
     if !@cur_student.nil? && @student.id!=@cur_student.id
        flash[:alert] = "Not authorised to perform this action"
-       redirect_to courses_path
+       redirect_to root_path
     end
   end
 
@@ -91,7 +98,7 @@ class StudentsController < ApplicationController
       @instructor = Instructor.find_by user_id: current_user.id
       if !@instructor.nil? 
         flash[:alert] = "Not authorised to perform this action"
-        redirect_to courses_path
+        redirect_to root_path
       end
     end
   end

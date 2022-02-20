@@ -2,7 +2,6 @@ class HomeController < ApplicationController
   def index
     if is_instructor?
       if !Instructor.exists?(user_id:current_user.id)
-        print "I am inside Inst"
         inst = Instructor.new
         inst.user_id = current_user.id
         inst.department = 'edit deptartment'
@@ -14,7 +13,6 @@ class HomeController < ApplicationController
 
     if is_student?
       if !Student.exists?(user_id:current_user.id)
-        print "I am inside Student"
         stud = Student.new
         stud.user_id = current_user.id
         stud.phone_number = 'Edit Phone'

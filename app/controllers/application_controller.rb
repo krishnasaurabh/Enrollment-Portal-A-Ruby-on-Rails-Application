@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
      before_action :configure_permitted_parameters , if: :devise_controller?
      before_action :authenticate_user!, unless: :devise_controller?
-
+     before_action :check_student_instructor_registered, unless: :devise_controller?
 
      def is_student?
           user_signed_in? && current_user.user_type == "Student"
@@ -17,6 +17,20 @@ class ApplicationController < ActionController::Base
           user_signed_in? && current_user.user_type == "Admin"
      end
      helper_method :is_admin?
+
+     def check_student_instructor_registered
+          if is_instructor?
+               if !Instructor.exists?(user_id:current_user.id)
+                    redirect_to new_instructor_path
+               end
+          end
+
+          if is_student?
+               if !Student.exists?(user_id:current_user.id)
+                    redirect_to new_student_path
+               end
+          end
+     end
 
      def get_cur_student
           if is_student?

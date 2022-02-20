@@ -1,5 +1,6 @@
 class InstructorsController < ApplicationController
   before_action :set_instructor, only: %i[ show edit update destroy ]
+  skip_before_action :check_student_instructor_registered, only: %i[new create]
   before_action :correct_student?
   before_action :correct_instructor?
 
@@ -24,9 +25,13 @@ class InstructorsController < ApplicationController
 
   # POST /instructors or /instructors.json
   def create
-    user = User.create!(:name => params['instructor']['name'],:email => params['instructor']["email"], :password => "defaultpassword",:user_type => "Instructor")
     @instructor = Instructor.new(instructor_params)
-    @instructor.user_id = user.id
+    if is_instructor?
+      @instructor.user_id = current_user.id
+    else
+      user = User.create!(:name => params['instructor']['name'],:email => params['instructor']["email"], :password => "defaultpassword",:user_type => "Instructor")
+      @instructor.user_id = user.id
+    end
 
     respond_to do |format|
       if @instructor.save
@@ -61,16 +66,22 @@ class InstructorsController < ApplicationController
     @student = Student.find_by user_id: current_user.id
     if !@student.nil?
        flash[:alert] = "Not authorised to perform this action"
-       redirect_to courses_path
+       redirect_to root_path
     end
   end
 
   def correct_instructor?
     if is_instructor?
+      if (action_name == "new" || action_name == "create") && !Instructor.exists?(user_id:current_user.id)
+          return
+      elsif action_name == "index" ||action_name == "new" || action_name == "create"
+        redirect_to root_path
+        return
+      end
       @cur_instructor = Instructor.find_by user_id: current_user.id
       if !@cur_instructor.nil? && @instructor.id!=@cur_instructor.id
         flash[:alert] = "Not authorised to perform this action"
-        redirect_to courses_path
+        redirect_to root_path
       end
     end
   end

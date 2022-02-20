@@ -14,21 +14,21 @@
   <% if is_admin?%>
     <div class="field">
       <%= form.label :name %><br />
-      <%= form.text_field :name, autofocus: true, value: @is_new ? "" : instructor.user.name , autocomplete: "name" %>
+      <%= form.text_field :name, autofocus: true, value: @is_new ? "" : instructor.user.name , autocomplete: "name" , class:"form-control"%>
     </div>
 
     <div class="field">
       <%= form.label :email %><br />
-      <%= form.email_field :email, value: @is_new ? "" : instructor.user.email, autocomplete: "email" %>
+      <%= form.email_field :email, value: @is_new ? "" : instructor.user.email, autocomplete: "email" , class:"form-control"%>
     </div>
   <%end%>
 
   <div class="field">
     <%= form.label :department %>
-    <%= form.text_field :department %>
+    <%= form.text_field :department , class:"form-control"%>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: "btn btn-primary"%>
   </div>
 <% end %>

@@ -44,11 +44,16 @@
         <td><%= course.room %></td>
         <td><%= link_to 'Show', course,  class: 'btn btn-secondary btn-sm'%></td>
         <% if is_student? %>
-          <%if course.status == "open"%>
+          <%if Enrollment.find_by(:course_id => course.id, :student_id => get_cur_student.id)%>
+            <td><%= link_to 'Drop Enrollment', enrollment_path(Enrollment.find_by(:course_id => course.id, :student_id => get_cur_student.id)), method: :delete, data: { confirm: 'Are you sure?' } , class: 'btn btn-danger btn-sm'%></td>
+          <%elsif course.status == "open"%>
             <td><%= link_to 'Enroll', enroll_course_path(course.id), data: { confirm: 'Are you sure?' } , class: 'btn btn-primary btn-sm'%></td>
+          <%elsif Waitlist.find_by(:course_id => course.id, :student_id => get_cur_student.id)%>
+            <td><%= link_to 'Drop Waitlist', waitlist_path(Waitlist.find_by(:course_id => course.id, :student_id => get_cur_student.id)), method: :delete, data: { confirm: 'Are you sure?' } , class: 'btn btn-danger btn-sm'%></td>
           <%elsif course.status == "waitlist"%>
             <td><%= link_to 'Waitlist', waitlist_course_path(course.id), data: { confirm: 'Are you sure?' } , class: 'btn btn-primary btn-sm'%></td>
-          <%end%>
+        <%end%>
+        
         <% elsif is_instructor? && course.instructor_id == @instructor_id %>
           <td><%= link_to 'Enrolled', enrolled_students_path(course), class: 'btn btn-primary btn-sm'%> </td>
           <td><%= link_to 'Waitlisted', waitlisted_students_path(course), class: 'btn btn-primary btn-sm'%> </td>

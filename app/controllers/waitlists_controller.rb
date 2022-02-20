@@ -68,7 +68,15 @@ class WaitlistsController < ApplicationController
     @waitlist.destroy
     check_status
     respond_to do |format|
-      format.html { redirect_to waitlists_url, notice: "Waitlist was successfully destroyed." }
+
+      if is_instructor?
+        format.html { redirect_to waitlisted_students_url(@waitlist.course_id), alert: "Waitlist for #{@course.name} is dropped." }
+      elsif flash[:controller_from] == "Course"
+        format.html { redirect_to courses_path, alert: "Waitlist for #{@course.name} is dropped." }
+      else
+        format.html { redirect_to waitlists_url, alert: "Waitlist for #{@course.name} is dropped." }
+      end
+
       format.json { head :no_content }
     end
   end

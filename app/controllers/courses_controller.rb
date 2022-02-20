@@ -6,6 +6,7 @@ class CoursesController < ApplicationController
   # GET /courses or /courses.json
   def index
     @courses = Course.all
+    flash[:controller_from] = 'Course'
     if is_instructor?
       @instructor_id = Instructor.find_by(user_id: current_user.id).id
     end

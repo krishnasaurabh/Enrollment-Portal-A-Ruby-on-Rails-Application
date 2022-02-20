@@ -39,7 +39,7 @@ class EnrollmentsController < ApplicationController
       if @enrollment.save
         @course = Course.find(@enrollment.course_id)
         check_status
-        format.html { redirect_to enrolled_students_path(@course.id), notice: "Waitlist was successfully created." }
+        format.html { redirect_to enrolled_students_path(@course.id), alert: "Waitlist was successfully created." }
         format.json { render :enrolled_students_path, status: :created, location: @course }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -72,9 +72,11 @@ class EnrollmentsController < ApplicationController
     check_status
     respond_to do |format|
       if is_instructor?
-        format.html { redirect_to enrolled_students_url(@enrollment.course_id), notice: "Enrollment was successfully destroyed." }
+        format.html { redirect_to enrolled_students_url(@enrollment.course_id), alert: "Enrollment for #{@course.name} is dropped." }
+      elsif flash[:controller_from] == "Course"
+        format.html { redirect_to courses_path, alert: "Enrollment for #{@course.name} is dropped." }
       else
-        format.html { redirect_to enrollments_url, notice: "Enrollment was successfully destroyed." }
+        format.html { redirect_to enrollments_url, alert: "Enrollment for #{@course.name} is dropped." }
       end
       format.json { head :no_content }
     end

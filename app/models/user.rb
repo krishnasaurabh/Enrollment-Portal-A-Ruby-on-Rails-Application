@@ -6,6 +6,6 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validates :user_type, presence: true
   validates :name, presence: true
-  has_many :instructors
-  has_many :students
+  has_one :instructors
+  has_one :students
 end

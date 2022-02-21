@@ -2,25 +2,18 @@ require "test_helper"
 
 class CoursesControllerTest < ActionDispatch::IntegrationTest
 
-    include Devise::Test::IntegrationHelpers
+  include Devise::Test::IntegrationHelpers
 
-  # ---------------------------------------------
-  # add from here
   def init_user_login(user_fixture)
     get '/users/sign_in'
     sign_in users(user_fixture)
     post user_session_url
 
-    # If you want to test that things are working correctly, uncomment this below:
-    # follow_redirect!
-    # assert_response :success
-
     @course = courses(:one)
     @user = users(user_fixture)
   
   end
-  # add until here
-  # ---------------------------------------------
+
 
   # ------------ Index test cases 
   test "should get index for admin" do

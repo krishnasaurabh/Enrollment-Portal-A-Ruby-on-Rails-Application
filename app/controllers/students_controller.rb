@@ -27,16 +27,40 @@ class StudentsController < ApplicationController
 
   # POST /students or /students.json
   def create
+    users_errors = false
+    create_successful = false
+    user = ''
     @student = Student.new(student_params)
     if is_student?
       @student.user_id = current_user.id
+      ActiveRecord::Base.transaction do
+        @student.save!
+        create_successful = true
+      end
     else
-      user = User.create!(:name => params['student']['name'],:email => params['student']["email"], :password => "defaultpassword",:user_type => "Student")
-      @student.user_id = user.id
+      begin
+        user = User.new(:name => params['student']['name'],:email => params['student']["email"], :password => "defaultpassword",:user_type => "Student")
+        @username =  params['student']['name']
+        @useremail = params['student']["email"]
+        ActiveRecord::Base.transaction do
+          user.save!
+          @student.user_id = user.id
+          @student.save!
+          create_successful = true
+        end
+      rescue ActiveRecord::RecordInvalid => invalid
+        if user.errors[:name].any?
+          @student.errors.add(:name, user.errors[:name][0])
+        end
+    
+        if user.errors[:email].any?
+          @student.errors.add(:email, user.errors[:email][0])
+        end
+      end
     end
 
     respond_to do |format|
-      if @student.save
+      if create_successful
         format.html { redirect_to student_url(@student), notice: "Student was successfully created." }
         format.json { render :show, status: :created, location: @student }
       else
@@ -49,9 +73,37 @@ class StudentsController < ApplicationController
   # PATCH/PUT /students/1 or /students/1.json
   def update
     respond_to do |format|
-      if @student.update(student_params) 
+      update_successful = false
+      if is_admin?
+        begin
+          ActiveRecord::Base.transaction do
+            @student.update!(student_params) 
+            @student.user.update!(:name => params[:student][:name], :email =>  params[:student][:email])
+            update_successful = true
+          end
+        rescue ActiveRecord::RecordInvalid => invalid
+          if @student.user.errors[:name].any?
+            @student.errors.add(:name, @student.user.errors[:name][0])
+          end
+      
+          if @student.user.errors[:email].any?
+            @student.errors.add(:email, @student.user.errors[:email][0])
+          end
+        end
+      else
+        begin
+          ActiveRecord::Base.transaction do
+            @student.update!(student_params) 
+            update_successful = true
+          end
+        rescue ActiveRecord::RecordInvalid => invalid
+          p "failed"
+        end
+      end
+
+      if update_successful 
         if is_admin?
-          @student.user.update!(:name => params[:student][:name], :email =>  params[:student][:email])
+          
           format.html { redirect_to student_url(@student), notice: "Student was successfully updated." }
         else
           format.html { redirect_to root_path, notice: "Student was successfully updated." }

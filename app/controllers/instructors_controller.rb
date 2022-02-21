@@ -25,17 +25,41 @@ class InstructorsController < ApplicationController
 
   # POST /instructors or /instructors.json
   def create
+    users_errors = false
+    create_successful = false
+    user = ''
     @instructor = Instructor.new(instructor_params)
     if is_instructor?
       @instructor.user_id = current_user.id
+      ActiveRecord::Base.transaction do
+        @instructor.save!
+        create_successful = true
+      end
     else
-      user = User.create!(:name => params['instructor']['name'],:email => params['instructor']["email"], :password => "defaultpassword",:user_type => "Instructor")
-      @instructor.user_id = user.id
+      begin
+        user = User.new(:name => params['instructor']['name'],:email => params['instructor']["email"], :password => "defaultpassword",:user_type => "Instructor")
+        @username =  params['instructor']['name']
+        @useremail = params['instructor']["email"]
+        ActiveRecord::Base.transaction do
+          user.save!
+          @instructor.user_id = user.id
+          @instructor.save!
+          create_successful = true
+        end
+      rescue ActiveRecord::RecordInvalid => invalid
+        if user.errors[:name].any?
+          @instructor.errors.add(:name, user.errors[:name][0])
+        end
+    
+        if user.errors[:email].any?
+          @instructor.errors.add(:email, user.errors[:email][0])
+        end
+      end
     end
 
     respond_to do |format|
-      if @instructor.save
-        format.html { redirect_to instructor_url(@instructor), notice: "Instructor was successfully created." }
+      if create_successful
+        format.html { redirect_to instructor_url(@instructor), notice: "instructor was successfully created." }
         format.json { render :show, status: :created, location: @instructor }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -47,12 +71,40 @@ class InstructorsController < ApplicationController
   # PATCH/PUT /instructors/1 or /instructors/1.json
   def update
     respond_to do |format|
-      if @instructor.update(instructor_params)
+      update_successful = false
+      if is_admin?
+        begin
+          ActiveRecord::Base.transaction do
+            @instructor.update!(instructor_params) 
+            @instructor.user.update!(:name => params[:instructor][:name], :email =>  params[:instructor][:email])
+            update_successful = true
+          end
+        rescue ActiveRecord::RecordInvalid => invalid
+          if @instructor.user.errors[:name].any?
+            @instructor.errors.add(:name, @instructor.user.errors[:name][0])
+          end
+      
+          if @instructor.user.errors[:email].any?
+            @instructor.errors.add(:email, @instructor.user.errors[:email][0])
+          end
+        end
+      else
+        begin
+          ActiveRecord::Base.transaction do
+            @instructor.update!(instructor_params) 
+            update_successful = true
+          end
+        rescue ActiveRecord::RecordInvalid => invalid
+          p "failed"
+        end
+      end
+
+      if update_successful 
         if is_admin?
-          @instructor.user.update!(:name => params[:instructor][:name], :email =>  params[:instructor][:email])
-          format.html { redirect_to instructor_url(@instructor), notice: "Instructor was successfully updated." }
+          
+          format.html { redirect_to instructor_url(@instructor), notice: "instructor was successfully updated." }
         else
-          format.html { redirect_to root_path, notice: "Instructor was successfully updated." }
+          format.html { redirect_to root_path, notice: "instructor was successfully updated." }
         end
         format.json { render :show, status: :ok, location: @instructor }
       else
@@ -61,6 +113,7 @@ class InstructorsController < ApplicationController
       end
     end
   end
+
 
   def correct_student?
     @student = Student.find_by user_id: current_user.id

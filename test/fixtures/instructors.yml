@@ -1,7 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  department: MyString
+  id: 1
+  department: ECE
+  user_id: 1
 
 two:
-  department: MyString
+  id: 2
+  department: IT
+  user_id: 2

@@ -1,29 +1,31 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  description: MyString
-  instructor_name: MyString
-  weekday_one: 1
-  weekday_two: 1
-  start_time: MyString
-  end_time: MyString
-  course_code: MyString
+  id: 1
+  name: OS
+  description: Operating Systems
+  weekday_one: "THU"
+  weekday_two: "FRI"
+  start_time: "02:30"
+  end_time: "03:30"
+  course_code: CSC505
   capacity: 1
-  status: 1
-  room: MyString
-  instructor: one
+  status: :open
+  room: 2207
+  instructor_id: 1
+  waitlist_capacity: 1
 
 two:
-  name: MyString
-  description: MyString
-  instructor_name: MyString
-  weekday_one: 1
-  weekday_two: 1
-  start_time: MyString
-  end_time: MyString
-  course_code: MyString
+  id: 2
+  name: ADBI
+  description: Algos for BI
+  weekday_one: "WED"
+  weekday_two: "THU"
+  start_time: "03:30"
+  end_time: "06:30"
+  course_code: CSC591
   capacity: 1
-  status: 1
-  room: MyString
-  instructor: two
+  status: :closed
+  room: online
+  instructor_id: 2
+  waitlist_capacity: 1

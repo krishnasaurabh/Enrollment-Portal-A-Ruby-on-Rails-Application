@@ -14,8 +14,8 @@
   <tbody>
     <% @waitlists.each do |waitlist| %>
       <tr>
-        <td><%= waitlist.student.user.name %></td>
-        <td><%= waitlist.course.name %></td>
+      <td><%= link_to waitlist.student.user.name , student_url(waitlist.student) %></td>
+        <td><%= link_to waitlist.course.name , course_url(waitlist.course) %></td>
         <td><%= link_to 'Drop Waitlist', waitlist, method: :delete, data: { confirm: 'Are you sure?' } , class: 'btn btn-danger btn-sm'%></td>
       </tr>
     <% end %>

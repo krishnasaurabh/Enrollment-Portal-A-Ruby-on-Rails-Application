@@ -132,6 +132,7 @@ class StudentsController < ApplicationController
     end
   end
 
+  #deny access to all the users unless admin
   def deny_access
     if (action_name == "new" || action_name == "create") && !Student.exists?(user_id:current_user.id)
       return
@@ -141,6 +142,7 @@ class StudentsController < ApplicationController
     end
   end
 
+  #check if the student making the update is a correct student or not
   def correct_student?
     @cur_student = Student.find_by user_id: current_user.id
     if !@cur_student.nil? && @student.id!=@cur_student.id
@@ -149,6 +151,7 @@ class StudentsController < ApplicationController
     end
   end
 
+  #check if the instructor making the update is a correct student or not
   def correct_instructor?
     if is_instructor?
       @instructor = Instructor.find_by user_id: current_user.id

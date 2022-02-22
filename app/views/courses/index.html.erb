@@ -1,6 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Courses</h1>
+<% if !is_student? %>
+<%= link_to 'New Course', new_course_path, class: 'btn btn-primary'  %>
+<%end%>
+
+<%= link_to 'Back', home_index_path , class: 'btn btn-primary' %>
 
 <table class="table">
   <thead>
@@ -74,8 +79,3 @@
 
 <br>
 
-<% if !is_student? %>
-<%= link_to 'New Course', new_course_path, class: 'btn btn-primary'  %>
-<%end%>
-
-<%= link_to 'Back', home_index_path , class: 'btn btn-primary' %>

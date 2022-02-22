@@ -1,6 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Instructors</h1>
+<%= link_to 'New Instructor', new_instructor_path , class: 'btn btn-primary' %>
+<%= link_to 'Back', home_index_path , class: 'btn btn-primary' %>
 
 <table class="table">
   <thead>
@@ -28,6 +30,4 @@
 
 <br>
 
-<%= link_to 'New Instructor', new_instructor_path , class: 'btn btn-primary' %>
-<%= link_to 'Back', home_index_path , class: 'btn btn-primary' %>
 

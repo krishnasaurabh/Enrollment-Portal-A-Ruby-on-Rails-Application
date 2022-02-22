@@ -1,8 +1,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  include ActiveModel::Dirty
-  validate :user_type_change, :if => :user_type_changed?
+
   
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
@@ -13,10 +12,4 @@ class User < ApplicationRecord
   has_one :students
 
 
-  
-  def user_type_change
-    if user_type_was != user_type 
-        errors.add(:user_type, "cannot be changed") 
-    end
-end
 end

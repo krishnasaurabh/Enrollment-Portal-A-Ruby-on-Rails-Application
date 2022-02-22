@@ -4,6 +4,7 @@ class CoursesController < ApplicationController
   before_action :correct_instructor?, only: %i[ edit update destroy enrolled_students waitlisted_students]
 
   # GET /courses or /courses.json
+  #Get all the courses, if the user is an instructor, then create a var with this instructor's details pulled from db. 
   def index
     @courses = Course.all
     flash[:controller_from] = 'Course'
@@ -12,6 +13,7 @@ class CoursesController < ApplicationController
     end
   end
 
+  #If the user is an instructor, render only courses taught by the instructor
   def instructor_courses
     @courses = Course.all
     if is_instructor?
@@ -22,10 +24,12 @@ class CoursesController < ApplicationController
   end
 
   # GET /courses/1 or /courses/1.json
+  #Show course
   def show
   end
 
   # GET /courses/new
+  #Render a form to create new course.
   def new
     @course = Course.new
   end
@@ -35,6 +39,7 @@ class CoursesController < ApplicationController
   end
 
   # POST /courses or /courses.json
+  #Take the course params given from UI. Check if the user is instructor, if yes, then only save these course details to db.
   def create
     @course = Course.new(course_params)
     if is_instructor?
@@ -79,6 +84,9 @@ class CoursesController < ApplicationController
     end
   end
 
+  #This action checks whether the toal enrollment exceeds total capacity - if yes, then the course is closed. 
+  #If the total wait-list capacity is still not met, the status is left as waitlisted instead of closed.
+  #Else the status is open. This function is periodically called prior to making any changes
   def check_status
     total_enrollments = Enrollment.where(course_id: @course.id).count
     total_waitlist = Waitlist.where(course_id: @course.id).count
@@ -95,6 +103,7 @@ class CoursesController < ApplicationController
     @course.save
   end
 
+  #An action that checks if the user is a student. If yes, block him from performing any course related modifitions. 
   def correct_student?
     @student = Student.find_by user_id: current_user.id
     if !@student.nil?
@@ -103,6 +112,7 @@ class CoursesController < ApplicationController
     end
   end
 
+#An action that checks whether the user is an instructor or not. If so, whether the course that this instructor is accessing is his own course or not. 
   def correct_instructor?
     if is_instructor?
       @instructor = Instructor.find_by user_id: current_user.id
@@ -113,6 +123,7 @@ class CoursesController < ApplicationController
     end
   end
 
+#Get the enrolled students if the user accessing them is an instructor or admin. 
   def enrolled_students
     if is_instructor? || is_admin?
       @course_name = Course.find(params[:id]).name
@@ -120,6 +131,7 @@ class CoursesController < ApplicationController
     end
   end
 
+#If the user is an isntrucro or admin, then get the waitlisted students corresponding to the course clicked on, in UI. 
   def waitlisted_students
     if is_instructor? || is_admin?
       @course_name = Course.find(params[:id]).name

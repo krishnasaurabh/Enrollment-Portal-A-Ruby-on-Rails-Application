@@ -68,7 +68,7 @@
     <%= link_to 'Waitlist Students', show_waitlist_course_for_student_path(@course), class: 'btn btn-primary'%> 
     <%= link_to 'Waitlisted Students', waitlisted_students_path(@course) , class: 'btn btn-primary'%> 
     <%= link_to 'Edit', edit_course_path(@course) , class: 'btn btn-primary'%> 
-    <%= link_to 'Delete', @course, method: :delete , class: 'btn btn-danger'%> 
+    <%= link_to 'Delete',  @course, method: :delete , class: 'btn btn-danger'%> 
 <%end%>
 
 <%= link_to 'Back', courses_path, class: 'btn btn-primary' %>

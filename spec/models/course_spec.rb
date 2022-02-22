@@ -37,6 +37,11 @@ RSpec.describe 'take only valid weekdays', type: :model do
   it { is_expected.to allow_values(:MON, :TUE, :WED, :THU).for(:weekday_one) }
 end
   
-RSpec.describe Course, type: :model do 
+RSpec.describe Course, regressor: true do 
+  subject { Course.new(id: 5, 
+    name: "Potions", 
+    description: "Potions III", weekday_one: :WED, weekday_two: :THU, 
+    start_time: "03:30", end_time: "06:30", course_code: "WIZ330", 
+    capacity: 1, status: :waitlist, room: "online", instructor_id: 1, waitlist_capacity: 1) }
   it { is_expected.to belong_to(:instructor) }
 end

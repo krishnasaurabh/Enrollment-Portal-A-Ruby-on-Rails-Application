@@ -23,9 +23,8 @@ class Course < ApplicationRecord
     enum status: [:open, :closed, :waitlist], _prefix: true
 
 
+    #If one tries to reduce the course capacity, throw an error. Similarly, if one tries to reduce waitlist capacity, throw error
     def capacity_change
-
-
         if capacity_was && capacity < capacity_was
             errors.add(:capacity, "Can only be increased") 
         elsif waitlist_capacity_was && waitlist_capacity < waitlist_capacity_was
@@ -33,12 +32,14 @@ class Course < ApplicationRecord
         end
     end
 
+    #CHecking that the two weekdays are not same. 
     def validate_week_one_two
         if weekday_two.present? && weekday_one == weekday_two
             errors.add(:weekday_two, "Weekday One and Weekday Two cannot be the same.")
         end
     end
 
+    #Checking that the start and end times follow stipulated HH:MM format
     def start_end_time_check
         if m = start_time.match(/^([0-1]?[0-9]|2[0-3]):([0-5][0-9])/)
             hh,mm = m.captures.map{|s| s.to_i}
@@ -59,6 +60,7 @@ class Course < ApplicationRecord
         end
     end
 
+    #Checking that course code has 3 lettres followed by 3 numbers. Throw error otherwise. 
     def check_course_code
         if !course_code.match(/^[A-Z]{3}[0-9]{3}$/)
             errors.add(:course_code, "should have the format 3 letters followed by 3 digits, e.g. ECE123, CSA090")

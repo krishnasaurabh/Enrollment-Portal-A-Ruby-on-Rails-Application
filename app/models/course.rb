@@ -3,8 +3,8 @@ class Course < ApplicationRecord
     validate :capacity_change, :if => :capacity_changed? || :waitlist_capacity_changed?
 
     belongs_to :instructor
-    has_many :enrollments, dependent: :delete_all
-    has_many :waitlists, dependent: :delete_all
+    has_many :enrollments, dependent: :destroy
+    has_many :waitlists, dependent: :destroy
     validates :course_code, presence: true, uniqueness: true 
     validates :status, presence: true
     validates :name, presence: true

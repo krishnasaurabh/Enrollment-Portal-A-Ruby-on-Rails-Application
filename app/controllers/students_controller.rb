@@ -33,9 +33,13 @@ class StudentsController < ApplicationController
     @student = Student.new(student_params)
     if is_student?
       @student.user_id = current_user.id
-      ActiveRecord::Base.transaction do
-        @student.save!
-        create_successful = true
+      begin
+        ActiveRecord::Base.transaction do
+          @student.save!
+          create_successful = true
+        end
+      rescue ActiveRecord::RecordInvalid => invalid
+        p "why me?"
       end
     else
       begin

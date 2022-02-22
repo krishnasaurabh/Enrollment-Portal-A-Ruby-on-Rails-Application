@@ -31,9 +31,13 @@ class InstructorsController < ApplicationController
     @instructor = Instructor.new(instructor_params)
     if is_instructor?
       @instructor.user_id = current_user.id
-      ActiveRecord::Base.transaction do
-        @instructor.save!
-        create_successful = true
+      begin
+        ActiveRecord::Base.transaction do
+          @instructor.save!
+          create_successful = true
+        end
+      rescue ActiveRecord::RecordInvalid => invalid
+        p "why me?"
       end
     else
       begin

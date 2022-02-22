@@ -57,11 +57,13 @@ class AdminsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  
+  # this will stop all unauthorized users to access the admin routes
   def deny_access
     flash[:alert] = "Not authorised to perform this action"
     redirect_to root_path
   end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_admin

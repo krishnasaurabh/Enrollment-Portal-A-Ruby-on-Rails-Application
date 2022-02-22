@@ -1,6 +1,8 @@
 ENV['RAILS_ENV'] ||= 'test'
 require_relative "../config/environment"
 require "rails/test_help"
+require 'rspec/autorun'
+require 'rspec/rails'
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
@@ -12,6 +14,7 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
   # ---------------------------------------------
   # add from here
+
   include Devise::Test::IntegrationHelpers
   include Warden::Test::Helpers
 
@@ -27,4 +30,5 @@ class ActiveSupport::TestCase
   # add until here
   # ---------------------------------------------
 
+  
 end

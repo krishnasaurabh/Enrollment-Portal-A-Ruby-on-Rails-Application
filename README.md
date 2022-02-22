@@ -12,6 +12,12 @@ There will only be one admin preconfigured and the credentials for the admin are
 
 `password: MyStrongPassword1`
 
+## Student/Instructor created by admin Credentials 
+
+The default password for student or instructor created by admin 
+
+`password: defaultpassword`
+
 ## Some useful links to operations
 
 1. [check student enrollments](https://mybiryanipack.herokuapp.com/enrollments)

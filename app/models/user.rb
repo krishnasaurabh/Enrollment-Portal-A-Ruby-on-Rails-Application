@@ -15,7 +15,7 @@ class User < ApplicationRecord
 
   
   def user_type_change
-    if user_type_change_was != user_type 
+    if user_type_was != user_type 
         errors.add(:user_type, "cannot be changed") 
     end
 end

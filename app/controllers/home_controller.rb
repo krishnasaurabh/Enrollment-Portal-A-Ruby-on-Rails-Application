@@ -30,8 +30,10 @@ class HomeController < ApplicationController
 
   end
 
-    def about_us
-    end
+  # GET /about_us
+  # shows the fancy about page
+  def about_us
+  end
 
 
 end

@@ -6,11 +6,14 @@ class WaitlistsController < ApplicationController
   # GET /waitlists or /waitlists.json
   def index
     if is_student?
+      # this shows waitlists for the current user
       @waitlists = Waitlist.where(student_id: Student.find_by(user_id: current_user.id).id)
     elsif is_instructor?
+      # blocks access to instructor as he can see from the courses details page
       flash[:alert] = "Not authorised to perform this action"
       redirect_to courses_path
     elsif is_admin?
+      #  this shows all the waitlists for all students
       @waitlists = Waitlist.all
     end
   end
@@ -26,9 +29,8 @@ class WaitlistsController < ApplicationController
 
   # GET /waitlists/1/edit
   def edit
-    render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
-    # flash[:alert] = "Not authorised to perform this action"
-    # redirect_to courses_path
+    flash[:alert] = "Not authorised to perform this action"
+    redirect_to courses_path
   end
 
   # POST /waitlists or /waitlists.json
@@ -81,6 +83,8 @@ class WaitlistsController < ApplicationController
     end
   end
 
+  # this will check the status for a course and modify it based on the number of enrollments and waitlists
+  # it considers the course waitlist_capacity and the capacity to dermine the status of the course
   def check_status
     total_enrollments = Enrollment.where(course_id: @course.id).count
     total_waitlist = Waitlist.where(course_id: @course.id).count
@@ -96,6 +100,9 @@ class WaitlistsController < ApplicationController
     @course.save
   end
 
+
+  #  GET /waitlist_course/:id or /waitlist_course/1
+  # this is for a student to waitlist a course
   def waitlist_course
     @waitlist = Waitlist.new
 
@@ -135,12 +142,16 @@ class WaitlistsController < ApplicationController
     end
   end
 
+  # /courses/:id/waitlisted_students 
+  # shows all students waitlist in the course passed as arguemnt
+  # this is visible by admin and authorized instructor
   def show_waitlist_course_for_student
     @waitlist = Waitlist.new
     @course = Course.find params[:course_id]
     render :new
   end
 
+  # this will block operations that student should not access
   def correct_student?
     @student = Student.find_by user_id: current_user.id
     if !@student.nil? && @student.id!=@waitlist.student_id
@@ -149,6 +160,8 @@ class WaitlistsController < ApplicationController
     end
   end
 
+  # this will block operations that instructor should not access
+  # it will block the instructor if the course whose enrollments are not belongging to his/her course
   def correct_instructor?
     if is_instructor?
       @instructor = Instructor.find_by user_id: current_user.id
@@ -164,6 +177,7 @@ class WaitlistsController < ApplicationController
       end
     end
   end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_waitlist

@@ -31,19 +31,22 @@ class InstructorsController < ApplicationController
     @instructor = Instructor.new(instructor_params)
     if is_instructor?
       @instructor.user_id = current_user.id
+      # start transaction to create a instructor that can be rolled back if it fails
       begin
         ActiveRecord::Base.transaction do
           @instructor.save!
           create_successful = true
         end
       rescue ActiveRecord::RecordInvalid => invalid
-        p "why me?"
       end
     else
       begin
         user = User.new(:name => params['instructor']['name'],:email => params['instructor']["email"], :password => "defaultpassword",:user_type => "Instructor")
         @username =  params['instructor']['name']
         @useremail = params['instructor']["email"]
+        # if admin
+        # start transaction to create a instructor that can be rolled back if it fails
+        # a user must be created before an instructor can be as instructor has a foriegn key of user
         ActiveRecord::Base.transaction do
           user.save!
           @instructor.user_id = user.id
@@ -51,6 +54,7 @@ class InstructorsController < ApplicationController
           create_successful = true
         end
       rescue ActiveRecord::RecordInvalid => invalid
+        # add the user errors to the list of errors
         if user.errors[:name].any?
           @instructor.errors.add(:name, user.errors[:name][0])
         end
@@ -118,7 +122,7 @@ class InstructorsController < ApplicationController
     end
   end
 
-
+  # this defines what methods to be blocked if accessed by the wrong user, i.e  student.
   def correct_student?
     @student = Student.find_by user_id: current_user.id
     if !@student.nil?
@@ -127,6 +131,7 @@ class InstructorsController < ApplicationController
     end
   end
 
+ # this defines what methods to be blocked if accessed by the wrong user, i.e instructor.
   def correct_instructor?
     if is_instructor?
       if (action_name == "new" || action_name == "create") && !Instructor.exists?(user_id:current_user.id)

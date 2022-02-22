@@ -7,11 +7,14 @@ class EnrollmentsController < ApplicationController
   # GET /enrollments or /enrollments.json
   def index
     if is_student?
+      # this shows enrollments for the current user
       @enrollments = Enrollment.where(student_id: Student.find_by(user_id: current_user.id).id)
     elsif is_instructor?
+      # blocks access to instructor as he can see from the courses details page
       flash[:alert] = "Not authorised to perform this action"
       redirect_to courses_path
     elsif is_admin?
+      #  this shows all the enrollemets for all students
       @enrollments = Enrollment.all
     end
   end
@@ -25,7 +28,8 @@ class EnrollmentsController < ApplicationController
     @enrollment = Enrollment.new
   end
 
-  # GET /enrollments/1/edit
+  # GET /enrollments/1/edit 
+  # all edit operations are not authorized it can only be deleted or created
   def edit
     flash[:alert] = "Not authorised to perform this action"
     redirect_to root_path
@@ -33,20 +37,18 @@ class EnrollmentsController < ApplicationController
 
   # POST /enrollments or /enrollments.json
   def create
-    
     enroll_course
     respond_to do |format|
       if @enrollment.save
         @course = Course.find(@enrollment.course_id)
         check_status
-        format.html { redirect_to enrolled_students_path(@course.id), alert: "Waitlist was successfully created." }
+        format.html { redirect_to enrolled_students_path(@course.id), alert: "Enrollment was successfully created." }
         format.json { render :enrolled_students_path, status: :created, location: @course }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @enrollment.errors, status: :unprocessable_entity }
       end
     end
-
   end
 
   # PATCH/PUT /enrollments/1 or /enrollments/1.json
@@ -68,8 +70,8 @@ class EnrollmentsController < ApplicationController
   def destroy
     @course = Course.find(@enrollment.course_id)
     @enrollment.destroy
-    move_students_from_waitlist_to_enrolled
-    check_status
+    move_students_from_waitlist_to_enrolled 
+    check_status 
     respond_to do |format|
       if is_instructor?
         format.html { redirect_to enrolled_students_url(@enrollment.course_id), alert: "Enrollment for #{@course.name} is dropped." }
@@ -82,9 +84,10 @@ class EnrollmentsController < ApplicationController
     end
   end
 
+  #  GET /waitlist_course/:id or /waitlist_course/1
+  # this is for a student to waitlist a course
   def enroll_course
     @enrollment = Enrollment.new
-
     if !is_student? && (!enrollment_params[:course_id] || !enrollment_params[:student_id])
       flash[:alert] = "course and student should not be empty"
       return
@@ -123,13 +126,17 @@ class EnrollmentsController < ApplicationController
     end
   end
 
+  # /courses/:id/enrolled_students 
+  # shows all students enrolled in the course passed as arguemnt
+  # this is visible by admin and authorized instructor
   def show_enroll_course_for_student
     @enrollment = Enrollment.new
     @course = Course.find params[:course_id]
     render :new
   end
 
-
+  # this is triggered when an enrollment is dropped to move students from waitlist to enrollments 
+  # the top waitlist for that course (having least created_at) is converted to enrollment
   def move_students_from_waitlist_to_enrolled
     total_enrollments = Enrollment.where(course_id: @course.id).count
     total_waitlist = Waitlist.where(course_id: @course.id).count
@@ -141,6 +148,8 @@ class EnrollmentsController < ApplicationController
     end
   end
 
+  # this will check the status for a course and modify it based on the number of enrollments and waitlists
+  # it considers the course waitlist_capacity and the capacity to dermine the status of the course
   def check_status
     total_enrollments = Enrollment.where(course_id: @course.id).count
     total_waitlist = Waitlist.where(course_id: @course.id).count
@@ -157,6 +166,7 @@ class EnrollmentsController < ApplicationController
     @course.save
   end
 
+  # this will block operations that student should not access
   def correct_student?
     @student = Student.find_by user_id: current_user.id
     if !@student.nil? && @student.id!=@enrollment.student_id
@@ -165,6 +175,8 @@ class EnrollmentsController < ApplicationController
     end
   end
 
+  # this will block operations that instructor should not access
+  # it will block the instructor if the course whose enrollments are not belongging to his/her course
   def correct_instructor?
     if is_instructor?
       @instructor = Instructor.find_by user_id: current_user.id

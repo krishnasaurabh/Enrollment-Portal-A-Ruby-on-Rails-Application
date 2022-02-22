@@ -18,6 +18,17 @@ The default password for student or instructor created by admin
 
 `password: defaultpassword`
 
+## Testing instructions
+
+To run the tests use the below commands and check if they succeed
+
+To test the controllers run
+`rails test`
+
+To test the models run
+`rspec`
+
+
 ## Some useful links to operations
 
 1. [check student enrollments](https://mybiryanipack.herokuapp.com/enrollments)

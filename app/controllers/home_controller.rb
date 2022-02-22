@@ -1,5 +1,7 @@
 class HomeController < ApplicationController
+  #index page
   def index
+    #check if the current logged in user is an instructor or not
     if is_instructor?
       if !Instructor.exists?(user_id:current_user.id)
         inst = Instructor.new
@@ -11,6 +13,7 @@ class HomeController < ApplicationController
       end
     end
 
+    #check if the current logged in user is a student or not
     if is_student?
       if !Student.exists?(user_id:current_user.id)
         stud = Student.new

@@ -4,6 +4,7 @@ require 'rspec/autorun'
 
 class CourseTest < ActiveSupport::TestCase
 
+  #For a new course, check that all its attributes are validated
   RSpec.describe "attribute validations" do
     subject { Course.new(id: 3, 
     name: "DADA", 
@@ -16,6 +17,7 @@ class CourseTest < ActiveSupport::TestCase
     end    
   end
 
+  #For a new course with violating attribute values, test that the code is able to identify it as invalid value.
   RSpec.describe "attribute failed validations" do #Status has been set to null, the validation should fail
     subject { Course.new(id: 4, 
     name: "DADA", 

@@ -1,6 +1,6 @@
 databases:
   - name: mybiryanipack 
-    databaseName: mysite
+    databaseName: mybiryanipack
     user: admin
 
 services:

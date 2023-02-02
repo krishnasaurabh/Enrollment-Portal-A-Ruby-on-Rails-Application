@@ -38,6 +38,7 @@ To test the models run
 5. [check waitlisted students for a course](https://mybiryanipack.herokuapp.com/courses)
 6. [drop waitlist](https://mybiryanipack.herokuapp.com/instructor_courses)
 7. [edit profile](https://mybiryanipack.herokuapp.com/users/edit)
+7. [about us](https://mybiryanipack.herokuapp.com/about_us)
 
 ## Edge-case scenarios
 1. Given: Instructor has created a course with capacity 30 and there are already 29 students enrolled<br> When: New student enrolls to the course<br> Then: The status of the course changes to "Waitlist"
@@ -48,4 +49,6 @@ To test the models run
 6. Given: A course created by an Instructor<br> When: An another Instructor/Student clicks on show <br> Then: The Instructor/Student should not be able to see the enrolled students for the course
 7. Given: An Instructor has created a course<br> When: Another Instructor tries to enroll students the course <br> Then: Instructor should not be authorised
 8. Given: An Instructor creates a course<br> And: Students have enrolled to the course<br> When: Instructor drops the course<br> Then: The enrollments and waitlists should be dropped.
-8. Given: When an instructor updates a course capacity (can only be higher )<br> Then: The waitlists for that course will automatically convert into enrollemnts until the course enrollment capacity gets filled.
+9. Given: When an instructor updates a course capacity (can only be higher )<br> Then: The waitlists for that course will automatically convert into enrollemnts until the course enrollment capacity gets filled.
+10. Given: when unauthorized user accesses other profiles by changing URLS<br> Then: Restricting Access to other profiles by changing URLS, and show notice.
+

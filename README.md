@@ -1,4 +1,4 @@
-# MyBiryaniPack
+# Enrollment-Portal-A-Ruby-on-Rails-Application
 
 This is a project for CSC517 which replicates MyPack portal course registration
 
